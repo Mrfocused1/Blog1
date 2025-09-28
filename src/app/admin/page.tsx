@@ -335,37 +335,52 @@ export default function AdminPage() {
       {/* Header */}
       <header className="relative z-10 p-4 animate-blur-in">
         <div className="container mx-auto">
-          <nav className="flex items-center justify-between mb-4">
-            {/* Logo - Left on desktop, center on mobile */}
-            <div className="hidden md:flex items-center">
-              <img
-                src="/DGB.svg"
-                alt="DIRTYGLOVEBASTARDTV Logo"
-                className="h-32 w-auto"
-                style={{ backgroundColor: 'transparent' }}
-              />
+          {/* Mobile-first responsive navigation */}
+          <nav className="relative mb-4">
+            {/* Mobile Layout: Logo centered, button on right */}
+            <div className="flex md:hidden items-center justify-between min-h-[6rem] px-2">
+              <div className="w-16"></div> {/* Spacer for balance */}
+              <div className="flex-1 flex justify-center">
+                <img
+                  src="/DGB.svg"
+                  alt="DIRTYGLOVEBASTARDTV Logo"
+                  className="h-20 w-auto max-w-[200px]"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+              </div>
+              <div className="w-16 flex justify-end">
+                <Link href="/">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-gray-100 border-gray-300 text-black hover:bg-gray-200 text-xs"
+                  >
+                    ← Back
+                  </Button>
+                </Link>
+              </div>
             </div>
 
-            {/* Mobile logo - centered with absolute positioning */}
-            <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 flex justify-center">
-              <img
-                src="/DGB.svg"
-                alt="DIRTYGLOVEBASTARDTV Logo"
-                className="h-24 w-auto"
-                style={{ backgroundColor: 'transparent' }}
-              />
-            </div>
-
-            {/* Back button - positioned on the right */}
-            <div className="flex items-center gap-4 ml-auto">
-              <Link href="/">
-                <Button
-                  variant="outline"
-                  className="bg-gray-100 border-gray-300 text-black hover:bg-gray-200"
-                >
-                  ← Back to Site
-                </Button>
-              </Link>
+            {/* Desktop Layout: Logo left, button right */}
+            <div className="hidden md:flex items-center justify-between">
+              <div className="flex items-center">
+                <img
+                  src="/DGB.svg"
+                  alt="DIRTYGLOVEBASTARDTV Logo"
+                  className="h-32 w-auto"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+              </div>
+              <div className="flex items-center gap-4">
+                <Link href="/">
+                  <Button
+                    variant="outline"
+                    className="bg-gray-100 border-gray-300 text-black hover:bg-gray-200"
+                  >
+                    ← Back to Site
+                  </Button>
+                </Link>
+              </div>
             </div>
           </nav>
         </div>

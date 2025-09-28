@@ -66,7 +66,15 @@ export default function Home() {
       setVideos(videoList)
     } catch (error) {
       console.error('Error loading videos:', error)
-      toast.error('Failed to load videos')
+      // More descriptive error message for mobile users
+      toast.error('Failed to load videos. Please check your internet connection and try again.')
+      // Retry mechanism for mobile
+      setTimeout(() => {
+        if (videos.length === 0 && user) {
+          console.log('Retrying video load...')
+          loadVideos()
+        }
+      }, 3000)
     } finally {
       setIsLoading(false)
     }
@@ -167,37 +175,52 @@ export default function Home() {
       {/* Header */}
       <header className="relative z-10 p-4 animate-blur-in">
         <div className="container mx-auto">
-          <nav className="flex items-center justify-between mb-4">
-            {/* Logo - Left on desktop, center on mobile */}
-            <div className="hidden md:flex items-center">
-              <img
-                src="/DGB.svg"
-                alt="DIRTYGLOVEBASTARDTV Logo"
-                className="h-32 w-auto"
-                style={{ backgroundColor: 'transparent' }}
-              />
+          {/* Mobile-first responsive navigation */}
+          <nav className="relative mb-4">
+            {/* Mobile Layout: Logo centered, button on right */}
+            <div className="flex md:hidden items-center justify-between min-h-[6rem] px-2">
+              <div className="w-16"></div> {/* Spacer for balance */}
+              <div className="flex-1 flex justify-center">
+                <img
+                  src="/DGB.svg"
+                  alt="DIRTYGLOVEBASTARDTV Logo"
+                  className="h-20 w-auto max-w-[200px]"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+              </div>
+              <div className="w-16 flex justify-end">
+                <Link href="/admin">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all text-xs"
+                  >
+                    Admin
+                  </Button>
+                </Link>
+              </div>
             </div>
 
-            {/* Mobile logo - centered with absolute positioning */}
-            <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 flex justify-center">
-              <img
-                src="/DGB.svg"
-                alt="DIRTYGLOVEBASTARDTV Logo"
-                className="h-24 w-auto"
-                style={{ backgroundColor: 'transparent' }}
-              />
-            </div>
-
-            {/* Admin button - positioned on the right */}
-            <div className="flex items-center gap-4 ml-auto">
-              <Link href="/admin">
-                <Button
-                  variant="outline"
-                  className="bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all"
-                >
-                  Admin
-                </Button>
-              </Link>
+            {/* Desktop Layout: Logo left, button right */}
+            <div className="hidden md:flex items-center justify-between">
+              <div className="flex items-center">
+                <img
+                  src="/DGB.svg"
+                  alt="DIRTYGLOVEBASTARDTV Logo"
+                  className="h-32 w-auto"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+              </div>
+              <div className="flex items-center gap-4">
+                <Link href="/admin">
+                  <Button
+                    variant="outline"
+                    className="bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all"
+                  >
+                    Admin
+                  </Button>
+                </Link>
+              </div>
             </div>
           </nav>
         </div>
@@ -273,7 +296,14 @@ export default function Home() {
         <div className="relative z-10 px-1 sm:px-4 animate-fade-in mt-2.5">
           {isLoading ? (
             <div className="text-center py-20">
-              <div className="text-black text-xl">Loading videos...</div>
+              <div className="text-black text-xl mb-4">Loading videos...</div>
+              <div className="text-black text-sm">If videos don't load, please check your internet connection</div>
+              <Button
+                onClick={loadVideos}
+                className="mt-4 bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all"
+              >
+                Retry Loading
+              </Button>
             </div>
           ) : filteredVideos.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
@@ -333,9 +363,18 @@ export default function Home() {
               <h3 className="text-2xl font-semibold text-black mb-2">
                 No videos found
               </h3>
-              <p className="text-black">
+              <p className="text-black mb-4">
                 Try adjusting your search or category filter
               </p>
+              <p className="text-black mb-4">
+                Or try refreshing if videos failed to load
+              </p>
+              <Button
+                onClick={loadVideos}
+                className="bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all"
+              >
+                Refresh Videos
+              </Button>
             </div>
           )}
         </div>
