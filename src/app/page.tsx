@@ -178,8 +178,8 @@ export default function Home() {
               />
             </div>
 
-            {/* Mobile logo - centered */}
-            <div className="md:hidden flex justify-center w-full">
+            {/* Mobile logo - centered with absolute positioning */}
+            <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 flex justify-center">
               <img
                 src="/DGB.svg"
                 alt="DIRTYGLOVEBASTARDTV Logo"
@@ -188,8 +188,8 @@ export default function Home() {
               />
             </div>
 
-            {/* Admin button */}
-            <div className="flex items-center gap-4">
+            {/* Admin button - positioned on the right */}
+            <div className="flex items-center gap-4 ml-auto">
               <Link href="/admin">
                 <Button
                   variant="outline"

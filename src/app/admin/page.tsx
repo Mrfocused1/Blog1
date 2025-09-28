@@ -346,8 +346,8 @@ export default function AdminPage() {
               />
             </div>
 
-            {/* Mobile logo - centered */}
-            <div className="md:hidden flex justify-center w-full">
+            {/* Mobile logo - centered with absolute positioning */}
+            <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 flex justify-center">
               <img
                 src="/DGB.svg"
                 alt="DIRTYGLOVEBASTARDTV Logo"
@@ -356,8 +356,8 @@ export default function AdminPage() {
               />
             </div>
 
-            {/* Back button */}
-            <div className="flex items-center gap-4">
+            {/* Back button - positioned on the right */}
+            <div className="flex items-center gap-4 ml-auto">
               <Link href="/">
                 <Button
                   variant="outline"
