@@ -341,19 +341,16 @@ export default function AdminPage() {
             <div className="flex md:hidden items-center justify-between min-h-[6rem] px-2 relative">
               <div className="w-16"></div> {/* Spacer for balance */}
               <div className="flex-1 flex justify-center items-center">
-                <div className="relative bg-white/10 rounded-lg p-2">
+                <div className="relative bg-white/10 rounded-lg p-1">
                   <img
                     src="/DGB.svg"
                     alt="DIRTYGLOVEBASTARDTV Logo"
-                    className="h-14 w-auto max-w-[160px] relative z-50"
+                    className="h-20 w-auto max-w-[200px] relative z-50"
                     style={{
-                      backgroundColor: 'white',
+                      backgroundColor: 'transparent',
                       display: 'block',
-                      minHeight: '56px',
-                      minWidth: '56px',
-                      border: '1px solid rgba(0,0,0,0.1)',
-                      borderRadius: '4px',
-                      padding: '4px'
+                      minHeight: '80px',
+                      minWidth: '80px'
                     }}
                     onLoad={() => console.log('Mobile admin logo loaded successfully')}
                     onError={(e) => {
