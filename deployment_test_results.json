@@ -1,0 +1,582 @@
+{
+  "test_timestamp": "2025-09-24T06:04:37.903368",
+  "domains": {
+    "lbtr.shop": {
+      "url": "https://lbtr.shop",
+      "accessible": true,
+      "page_title": "Urban Directory - Modern Video Directory v2",
+      "features": {
+        "urban_directory_title": {
+          "found": true,
+          "text": "Urban Directory",
+          "has_gradient": "",
+          "classes": "text-3xl sm:text-4xl md:text-6xl font-light mb-4"
+        },
+        "bold_subtitles": [
+          {
+            "text": "Find the full videos of the clips posted on the page",
+            "classes": "text-lg sm:text-xl text-gray-300 mb-6 max-w-2xl mx-auto px-4 font-semibold",
+            "tag": "p"
+          },
+          {
+            "text": "Coding Interview Preparation",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Planet Earth: Hidden Ecosystems",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Minimalist Home Tour 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "World Cup Final Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Tech Talk: Future of AI",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Epic Electronic Music Mix 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Movie Trailer Mashup 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Quantum Physics Explained Simply",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Stand-Up Comedy Special 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Best Basketball Highlights 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "The Joe Rogan Experience - Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Lofi Hip Hop Radio - Beats to Study/Chill",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          }
+        ],
+        "admin_access": {
+          "found": true,
+          "element_type": "a",
+          "text": "Admin",
+          "href": "https://www.lbtr.shop/#admin"
+        },
+        "admin_subtitle": {
+          "found": true,
+          "text": ""
+        },
+        "modern_checkboxes": {
+          "modal_not_found": true
+        },
+        "firebase_integration": {
+          "firebase_in_source": true,
+          "firestore_in_source": true,
+          "googleapis_in_source": true,
+          "likely_integrated": true
+        }
+      },
+      "console_errors": [
+        {
+          "level": "SEVERE",
+          "message": "https://www.lbtr.shop/favicon.svg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690291706
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/yDriIZ8UF6k/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690291706
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/8HI9EYGld4M/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690291706
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/KoJVYlnF_uE/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690291706
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/8KnZB_T3WEA/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690291706
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/BKwrYrC2LLI/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690291706
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/Q4kjGBuddhE/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690291706
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://www.lbtr.shop/ 1173:24 \"\u274c Error fixing thumbnails:\" TypeError: Cannot read properties of undefined (reading 'match')\n    at VideoMetadataFetcher.extractYouTubeId (https://www.lbtr.shop/:611:39)\n    at https://www.lbtr.shop/:1148:62\n    at https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:407057\n    at https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:305287\n    at LLRBNode.inorderTraversal (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:93893)\n    at LLRBNode.inorderTraversal (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:93872)\n    at SortedMap.inorderTraversal (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:92228)\n    at DocumentSet.forEach (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:305261)\n    at QuerySnapshot.forEach (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:407042)\n    at window.fixBrokenThumbnails (https://www.lbtr.shop/:1133:26)",
+          "source": "console-api",
+          "timestamp": 1758690294726
+        }
+      ],
+      "screenshots": [
+        "/Users/paulbridges/Downloads/try again/lbtr.shop_initial.png",
+        "/Users/paulbridges/Downloads/try again/lbtr.shop_admin.png",
+        "/Users/paulbridges/Downloads/try again/lbtr.shop_final.png"
+      ],
+      "deployment_info": {
+        "deployment-version": "checkbox-ui-v2.0"
+      }
+    },
+    "urban-reel.vercel.app": {
+      "url": "https://urban-reel.vercel.app",
+      "accessible": true,
+      "page_title": "Urban Directory - Modern Video Directory v2",
+      "features": {
+        "urban_directory_title": {
+          "found": true,
+          "text": "Urban Directory",
+          "has_gradient": "",
+          "classes": "text-3xl sm:text-4xl md:text-6xl font-light mb-4"
+        },
+        "bold_subtitles": [
+          {
+            "text": "Find the full videos of the clips posted on the page",
+            "classes": "text-lg sm:text-xl text-gray-300 mb-6 max-w-2xl mx-auto px-4 font-semibold",
+            "tag": "p"
+          },
+          {
+            "text": "Coding Interview Preparation",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Planet Earth: Hidden Ecosystems",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Minimalist Home Tour 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "World Cup Final Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Tech Talk: Future of AI",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Epic Electronic Music Mix 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Movie Trailer Mashup 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Quantum Physics Explained Simply",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Stand-Up Comedy Special 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Best Basketball Highlights 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "The Joe Rogan Experience - Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Lofi Hip Hop Radio - Beats to Study/Chill",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          }
+        ],
+        "admin_access": {
+          "found": true,
+          "element_type": "a",
+          "text": "Admin",
+          "href": "https://urban-reel.vercel.app/#admin"
+        },
+        "admin_subtitle": {
+          "found": true,
+          "text": ""
+        },
+        "modern_checkboxes": {
+          "modal_not_found": true
+        },
+        "firebase_integration": {
+          "firebase_in_source": true,
+          "firestore_in_source": true,
+          "googleapis_in_source": true,
+          "likely_integrated": true
+        }
+      },
+      "console_errors": [
+        {
+          "level": "SEVERE",
+          "message": "https://urban-reel.vercel.app/favicon.svg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690306138
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/8HI9EYGld4M/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690306138
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/yDriIZ8UF6k/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690306138
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/KoJVYlnF_uE/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690306138
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/8KnZB_T3WEA/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690306138
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/Q4kjGBuddhE/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690306138
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://img.youtube.com/vi/BKwrYrC2LLI/maxresdefault.jpg - Failed to load resource: the server responded with a status of 404 ()",
+          "source": "network",
+          "timestamp": 1758690306138
+        },
+        {
+          "level": "SEVERE",
+          "message": "https://urban-reel.vercel.app/ 1173:24 \"\u274c Error fixing thumbnails:\" TypeError: Cannot read properties of undefined (reading 'match')\n    at VideoMetadataFetcher.extractYouTubeId (https://urban-reel.vercel.app/:611:39)\n    at https://urban-reel.vercel.app/:1148:62\n    at https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:407057\n    at https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:305287\n    at LLRBNode.inorderTraversal (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:93893)\n    at LLRBNode.inorderTraversal (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:93872)\n    at SortedMap.inorderTraversal (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:92228)\n    at DocumentSet.forEach (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:305261)\n    at QuerySnapshot.forEach (https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js:1:407042)\n    at window.fixBrokenThumbnails (https://urban-reel.vercel.app/:1133:26)",
+          "source": "console-api",
+          "timestamp": 1758690309017
+        }
+      ],
+      "screenshots": [
+        "/Users/paulbridges/Downloads/try again/urban-reel.vercel.app_initial.png",
+        "/Users/paulbridges/Downloads/try again/urban-reel.vercel.app_admin.png",
+        "/Users/paulbridges/Downloads/try again/urban-reel.vercel.app_final.png"
+      ],
+      "deployment_info": {
+        "deployment-version": "checkbox-ui-v2.0",
+        "vercel_headers": {
+          "headers": {
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "age": "316",
+            "cache-control": "no-cache, no-store, must-revalidate",
+            "content-disposition": "inline",
+            "content-encoding": "br",
+            "content-length": "23058",
+            "content-type": "text/html; charset=utf-8",
+            "date": "Wed, 24 Sep 2025 05:00:36 GMT",
+            "etag": "\"ac1df071ae9481b9ad6e2ebf98d751a5\"",
+            "expires": "0",
+            "last-modified": "Wed, 24 Sep 2025 04:55:20 GMT",
+            "pragma": "no-cache",
+            "server": "Vercel",
+            "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+            "x-content-type-options": "nosniff",
+            "x-frame-options": "DENY",
+            "x-vercel-cache": "HIT",
+            "x-vercel-id": "lhr1::9xznw-1758690036551-d8cb2cb3ab61"
+          },
+          "status": 200
+        }
+      }
+    }
+  },
+  "comparison": {
+    "both_accessible": true,
+    "title_comparison": {
+      "lbtr": "Urban Directory - Modern Video Directory v2",
+      "vercel": "Urban Directory - Modern Video Directory v2",
+      "same": true
+    },
+    "feature_comparison": {
+      "urban_directory_title": {
+        "lbtr": {
+          "found": true,
+          "text": "Urban Directory",
+          "has_gradient": "",
+          "classes": "text-3xl sm:text-4xl md:text-6xl font-light mb-4"
+        },
+        "vercel": {
+          "found": true,
+          "text": "Urban Directory",
+          "has_gradient": "",
+          "classes": "text-3xl sm:text-4xl md:text-6xl font-light mb-4"
+        },
+        "same": true
+      },
+      "bold_subtitles": {
+        "lbtr": [
+          {
+            "text": "Find the full videos of the clips posted on the page",
+            "classes": "text-lg sm:text-xl text-gray-300 mb-6 max-w-2xl mx-auto px-4 font-semibold",
+            "tag": "p"
+          },
+          {
+            "text": "Coding Interview Preparation",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Planet Earth: Hidden Ecosystems",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Minimalist Home Tour 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "World Cup Final Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Tech Talk: Future of AI",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Epic Electronic Music Mix 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Movie Trailer Mashup 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Quantum Physics Explained Simply",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Stand-Up Comedy Special 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Best Basketball Highlights 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "The Joe Rogan Experience - Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Lofi Hip Hop Radio - Beats to Study/Chill",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          }
+        ],
+        "vercel": [
+          {
+            "text": "Find the full videos of the clips posted on the page",
+            "classes": "text-lg sm:text-xl text-gray-300 mb-6 max-w-2xl mx-auto px-4 font-semibold",
+            "tag": "p"
+          },
+          {
+            "text": "Coding Interview Preparation",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Planet Earth: Hidden Ecosystems",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Minimalist Home Tour 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "World Cup Final Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Tech Talk: Future of AI",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Epic Electronic Music Mix 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Movie Trailer Mashup 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Quantum Physics Explained Simply",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Stand-Up Comedy Special 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Best Basketball Highlights 2024",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "The Joe Rogan Experience - Best Moments",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          },
+          {
+            "text": "Lofi Hip Hop Radio - Beats to Study/Chill",
+            "classes": "text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2",
+            "tag": "h3"
+          }
+        ],
+        "same": true
+      },
+      "admin_access": {
+        "lbtr": {
+          "found": true,
+          "element_type": "a",
+          "text": "Admin",
+          "href": "https://www.lbtr.shop/#admin"
+        },
+        "vercel": {
+          "found": true,
+          "element_type": "a",
+          "text": "Admin",
+          "href": "https://urban-reel.vercel.app/#admin"
+        },
+        "same": false
+      },
+      "admin_subtitle": {
+        "lbtr": {
+          "found": true,
+          "text": ""
+        },
+        "vercel": {
+          "found": true,
+          "text": ""
+        },
+        "same": true
+      },
+      "modern_checkboxes": {
+        "lbtr": {
+          "modal_not_found": true
+        },
+        "vercel": {
+          "modal_not_found": true
+        },
+        "same": true
+      },
+      "firebase_integration": {
+        "lbtr": {
+          "firebase_in_source": true,
+          "firestore_in_source": true,
+          "googleapis_in_source": true,
+          "likely_integrated": true
+        },
+        "vercel": {
+          "firebase_in_source": true,
+          "firestore_in_source": true,
+          "googleapis_in_source": true,
+          "likely_integrated": true
+        },
+        "same": true
+      }
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "MEDIUM",
+      "issue": "lbtr.shop: Modern checkbox UI not found or not working",
+      "solution": "Verify checkbox components and glassmorphism styling are deployed"
+    },
+    {
+      "priority": "HIGH",
+      "issue": "lbtr.shop: 8 console errors detected",
+      "solution": "Review and fix JavaScript errors: ['https://www.lbtr.shop/favicon.svg - Failed to load', 'https://img.youtube.com/vi/yDriIZ8UF6k/maxresdefau', 'https://img.youtube.com/vi/8HI9EYGld4M/maxresdefau']"
+    },
+    {
+      "priority": "MEDIUM",
+      "issue": "urban-reel.vercel.app: Modern checkbox UI not found or not working",
+      "solution": "Verify checkbox components and glassmorphism styling are deployed"
+    },
+    {
+      "priority": "HIGH",
+      "issue": "urban-reel.vercel.app: 8 console errors detected",
+      "solution": "Review and fix JavaScript errors: ['https://urban-reel.vercel.app/favicon.svg - Failed', 'https://img.youtube.com/vi/8HI9EYGld4M/maxresdefau', 'https://img.youtube.com/vi/yDriIZ8UF6k/maxresdefau']"
+    },
+    {
+      "priority": "ACTION",
+      "issue": "Multiple issues detected with current deployment",
+      "solution": "Consider reverting to commit a68aa24 'Add modern checkbox UI for category selection in admin panels' which was the last known working deployment"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-09-24T06:08:17.794986",
+  "domains": {
+    "lbtr.shop": {
+      "url": "https://lbtr.shop",
+      "title_gradient": {
+        "classes": "text-3xl sm:text-4xl md:text-6xl font-light mb-4",
+        "gradient_classes": [],
+        "has_purple_colors": false,
+        "is_text_gradient": false,
+        "has_animation": true
+      },
+      "css_analysis": {
+        "gradient_definitions": [
+          ".from-neon-purple { --tw-gradient-from: #1e40af var(--tw-gradient-from-position); --tw-gradient-to: rgb(30 64 175 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }",
+          ".via-neon-lavender { --tw-gradient-to: rgb(59 130 246 / 0)  var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), #3b82f6 var(--tw-gradient-via-position), var(--tw-gradient-to); }",
+          ".to-neon-purple { --tw-gradient-to: #1e40af var(--tw-gradient-to-position); }",
+          ".to-neon-lavender { --tw-gradient-to: #3b82f6 var(--tw-gradient-to-position); }"
+        ]
+      },
+      "computed_styles": {
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "background-clip": "border-box",
+        "color": "rgb(255, 255, 255)",
+        "background-color": "rgba(0, 0, 0, 0)",
+        "-webkit-background-clip": "border-box",
+        "-webkit-text-fill-color": "rgb(255, 255, 255)",
+        "animation": "none 0s ease 0s 1 normal none running",
+        "animation-duration": "0s",
+        "text-decoration": "rgb(255, 255, 255)"
+      },
+      "background_analysis": {
+        "tsparticles_found": true,
+        "canvas_count": 1
+      }
+    },
+    "urban-reel.vercel.app": {
+      "url": "https://urban-reel.vercel.app",
+      "title_gradient": {},
+      "css_analysis": {},
+      "computed_styles": {},
+      "background_analysis": {},
+      "error": "Alert Text: \u274c Error fixing thumbnails: Cannot read properties of undefined (reading 'match')\nMessage: unexpected alert open: {Alert text : \u274c Error fixing thumbnails: Cannot read properties of undefined (reading 'match')}\n  (Session info: chrome=140.0.7339.207)\nStacktrace:\n0   chromedriver                        0x00000001008f3274 cxxbridge1$str$ptr + 2882596\n1   chromedriver                        0x00000001008eb1a0 cxxbridge1$str$ptr + 2849616\n2   chromedriver                        0x0000000100415180 _RNvCslE4myv9Sbr3_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 73420\n3   chromedriver                        0x000000010049de40 _RNvCslE4myv9Sbr3_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 633740\n4   chromedriver                        0x0000000100450188 _RNvCslE4myv9Sbr3_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 315092\n5   chromedriver                        0x00000001008b6c54 cxxbridge1$str$ptr + 2635268\n6   chromedriver                        0x00000001008b9e6c cxxbridge1$str$ptr + 2648092\n7   chromedriver                        0x00000001008985d4 cxxbridge1$str$ptr + 2510724\n8   chromedriver                        0x00000001008ba718 cxxbridge1$str$ptr + 2650312\n9   chromedriver                        0x0000000100889d7c cxxbridge1$str$ptr + 2451244\n10  chromedriver                        0x00000001008d9dd4 cxxbridge1$str$ptr + 2779012\n11  chromedriver                        0x00000001008d9f54 cxxbridge1$str$ptr + 2779396\n12  chromedriver                        0x00000001008eadec cxxbridge1$str$ptr + 2848668\n13  libsystem_pthread.dylib             0x000000019c79ec0c _pthread_start + 136\n14  libsystem_pthread.dylib             0x000000019c799b80 thread_start + 8\n"
+    }
+  }
+}

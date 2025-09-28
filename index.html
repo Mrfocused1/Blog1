@@ -1,0 +1,2630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Force fresh deployment -->
+    <title>Urban Directory - Modern Video Directory v2</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- TSParticles CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/engine@3.0.2/tsparticles.engine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/slim@3.0.2/tsparticles.slim.min.js"></script>
+
+    <!-- Deployment timestamp: 2025-09-24-06:01 -->
+    <meta name="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta name="pragma" content="no-cache">
+    <meta name="expires" content="0">
+    <meta name="deployment-version" content="working-checkbox-fix-v3.0">
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAAxxFweyqcs13al8u7JFQcnoYS_OdIFYg",
+            authDomain: "directory-1-299d6.firebaseapp.com",
+            projectId: "directory-1-299d6",
+            storageBucket: "directory-1-299d6.firebasestorage.app",
+            messagingSenderId: "475447921714",
+            appId: "1:475447921714:web:5dbdeb1ec9d98156fbc02b",
+            measurementId: "G-D739RP9SPR"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // YouTube Data API Configuration
+        const YOUTUBE_API_KEY = 'AIzaSyBYase6m8V2IW6HkUkXgs5wz-dPzgrl2g0';
+        const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/videos';
+
+        // Make YouTube API constants globally accessible
+        window.YOUTUBE_API_KEY = YOUTUBE_API_KEY;
+        window.YOUTUBE_API_URL = YOUTUBE_API_URL;
+
+        // Make Firebase functions available globally
+        window.firebaseApp = app;
+        window.db = db;
+        window.auth = auth;
+        window.firebaseUtils = {
+            collection,
+            addDoc,
+            getDocs,
+            getDoc,
+            doc,
+            updateDoc,
+            deleteDoc,
+            orderBy,
+            query,
+            signInAnonymously
+        };
+
+        // Firebase is ready
+        window.firebaseReady = true;
+        console.log('Firebase initialized successfully');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'system': ['-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        'neon-purple': '#1e40af',
+                        'neon-lavender': '#3b82f6',
+                        'dark-bg': '#0d0d0d',
+                        'dark-card': 'rgba(255, 255, 255, 0.05)',
+                        'glass': 'rgba(255, 255, 255, 0.1)',
+                    },
+                    animation: {
+                        'pulse-neon': 'pulse-neon 2s ease-in-out infinite alternate',
+                        'blur-in': 'blur-in 0.6s ease-out forwards',
+                        'fade-in': 'fade-in 0.5s ease-out forwards',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        'pulse-neon': {
+                            '0%': { boxShadow: '0 0 5px #1e40af, 0 0 10px #1e40af, 0 0 15px #1e40af' },
+                            '100%': { boxShadow: '0 0 10px #1e40af, 0 0 20px #1e40af, 0 0 30px #1e40af' }
+                        },
+                        'blur-in': {
+                            '0%': { filter: 'blur(10px)', opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { filter: 'blur(0px)', opacity: '1', transform: 'translateY(0px)' }
+                        },
+                        'fade-in': {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 300;
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+            min-height: 100vh;
+        }
+
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glassmorphism-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(30, 64, 175, 0.2);
+        }
+
+        .neon-glow:hover {
+            box-shadow: 0 0 20px rgba(30, 64, 175, 0.6), 0 0 40px rgba(30, 64, 175, 0.4);
+            border-color: rgba(30, 64, 175, 0.8);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px rgba(30, 64, 175, 0.8);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        :focus {
+            outline: 2px solid #1e40af;
+            outline-offset: 2px;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(30, 64, 175, 0.3);
+        }
+
+        .search-input:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 20px rgba(30, 64, 175, 0.3);
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(30, 64, 175, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .category-btn:hover::before {
+            left: 100%;
+        }
+
+        .category-btn:hover {
+            background: rgba(30, 64, 175, 0.2);
+            border-color: rgba(30, 64, 175, 0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+        }
+
+        .category-btn.active {
+            background: white;
+            border-color: white;
+            color: black;
+        }
+
+        /* Modern Checkbox Styles */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .checkbox-item:hover {
+            background: rgba(30, 64, 175, 0.1);
+            border-color: rgba(30, 64, 175, 0.3);
+            transform: translateY(-1px);
+        }
+        .checkbox-item.selected {
+            background: rgba(30, 64, 175, 0.2);
+            border-color: #1e40af;
+        }
+        .custom-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .custom-checkbox.checked {
+            background: #1e40af;
+            border-color: #1e40af;
+        }
+        .custom-checkbox .check-icon {
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+        .custom-checkbox.checked .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .checkbox-label {
+            color: white;
+            font-size: 14px;
+            font-weight: 400;
+            flex: 1;
+        }
+        .checkbox-item.selected .checkbox-label {
+            color: #60a5fa;
+        }
+
+        /* Moving Border Button Effect */
+        .moving-border-btn {
+            position: relative;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .moving-border-btn::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #1e40af, #3b82f6, #1e40af, #3b82f6);
+            background-size: 300% 300%;
+            animation: moving-border 3s linear infinite;
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .moving-border-btn:hover::before {
+            opacity: 1;
+        }
+
+        .moving-border-btn:hover {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3);
+        }
+
+        @keyframes moving-border {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* TSParticles Background */
+        #tsparticles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Enhanced button styles */
+        .enhanced-btn {
+            position: relative;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(30, 64, 175, 0.3);
+            backdrop-filter: blur(12px);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .enhanced-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(30, 64, 175, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .enhanced-btn:hover::before {
+            left: 100%;
+        }
+
+        .enhanced-btn:hover {
+            background: rgba(30, 64, 175, 0.1);
+            border-color: rgba(30, 64, 175, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+        }
+
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .video-card {
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .bg-dark {
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+        }
+
+        .loading-pulse {
+            background: linear-gradient(90deg, rgba(30, 64, 175, 0.1) 0%, rgba(59, 130, 246, 0.3) 50%, rgba(30, 64, 175, 0.1) 100%);
+            background-size: 200% 100%;
+            animation: loading-shimmer 2s infinite;
+        }
+
+        @keyframes loading-shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* AI Generated field styling */
+        .ai-generated {
+            border: 2px solid #10b981 !important;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05)) !important;
+            position: relative;
+        }
+
+        .ai-generated::after {
+            content: "🤖 AI";
+            position: absolute;
+            top: -10px;
+            right: 8px;
+            background: #10b981;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-white">
+    <!-- TSParticles Background -->
+    <div id="tsparticles"></div>
+
+    <div id="root">
+        <div class="min-h-screen">
+            <!-- Header -->
+            <header class="animate-blur-in">
+                <div class="container mx-auto px-4 py-4">
+                    <nav class="flex items-center justify-end">
+                        <div class="flex items-center">
+                            <a href="#admin" class="text-gray-400 hover:text-neon-lavender transition-colors" onclick="showAdminLogin()">Admin</a>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+                <!-- Hero Section -->
+                <div class="text-center py-4 sm:py-8 mb-4 animate-blur-in">
+                    <h1 class="text-3xl sm:text-4xl md:text-6xl font-light mb-4">
+                        <span class="bg-gradient-to-r from-neon-purple via-neon-lavender to-neon-purple bg-clip-text text-transparent">
+                            Urban Directory
+                        </span>
+                    </h1>
+                    <p class="text-lg sm:text-xl text-gray-300 mb-6 max-w-2xl mx-auto px-4 font-semibold">
+                        Find the full videos of the clips posted on the page
+                    </p>
+
+                    <!-- Search Bar -->
+                    <div class="max-w-2xl mx-auto mb-2 sm:mb-4 px-4">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="searchInput"
+                                placeholder="Search videos..."
+                                class="w-full h-12 px-4 pr-12 search-input rounded-lg text-white placeholder-gray-500 focus:outline-none transition-all duration-300"
+                                oninput="filterVideos()"
+                            >
+                            <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-neon-purple hover:text-neon-lavender transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="mb-1 sm:mb-3 animate-fade-in">
+                    <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-2 px-0 sm:px-4" id="categoryFilters" style="scrollbar-width: none; -ms-overflow-style: none; scroll-snap-type: x mandatory;">
+                        <style>
+                            #categoryFilters::-webkit-scrollbar {
+                                display: none;
+                            }
+                            #categoryFilters {
+                                scroll-behavior: smooth;
+                                touch-action: pan-x;
+                            }
+                            .category-btn {
+                                flex-shrink: 0;
+                                white-space: nowrap;
+                                scroll-snap-align: start;
+                                touch-action: manipulation;
+                            }
+                            @media (max-width: 640px) {
+                                #categoryFilters {
+                                    padding-left: 0;
+                                    padding-right: 0;
+                                }
+                            }
+                        </style>
+                        <button class="category-btn active px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('All')" data-category="All">All</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Music')" data-category="Music">Music</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Podcasts')" data-category="Podcasts">Podcasts</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Sports')" data-category="Sports">Sports</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Comedy')" data-category="Comedy">Comedy</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Education')" data-category="Education">Education</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Entertainment')" data-category="Entertainment">Entertainment</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Lifestyle')" data-category="Lifestyle">Lifestyle</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Documentaries')" data-category="Documentaries">Documentaries</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Interviews')" data-category="Interviews">Interviews</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Vlogs')" data-category="Vlogs">Vlogs</button>
+                        <button class="category-btn px-4 py-2 rounded-full text-sm font-light" onclick="filterByCategory('Others')" data-category="Others">Others</button>
+                    </div>
+                </div>
+
+                <!-- Video Grid -->
+                <div id="videoGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4 lg:gap-6 animate-fade-in" style="padding: 0 5px;">
+                <style>
+                    @media (min-width: 640px) {
+                        #videoGrid {
+                            padding: 0 1rem !important;
+                        }
+                    }
+                </style>
+                    <!-- Videos will be inserted here by JavaScript -->
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-6 px-4 sm:px-0" style="display: none;">
+                    <!-- Loading cards will be inserted here -->
+                </div>
+            </main>
+
+            <!-- Video Player Modal -->
+            <div id="videoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeVideoModal()">
+                <div class="relative w-full max-w-6xl glassmorphism rounded-2xl overflow-hidden" onclick="event.stopPropagation()">
+                    <div class="flex items-center justify-between p-6 border-b border-neon-purple/20">
+                        <div class="flex-1">
+                            <h2 id="modalTitle" class="text-xl font-normal text-white mb-1"></h2>
+                            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                <span id="modalCategory" class="px-2 py-1 rounded-full text-xs bg-neon-purple/20 text-neon-purple"></span>
+                            </div>
+                        </div>
+                        <button onclick="closeVideoModal()" class="p-2 hover:bg-glass rounded-lg transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-400 hover:text-white">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="video-container" id="videoContainer">
+                        <!-- Video iframe will be inserted here -->
+                    </div>
+                    <div class="p-6">
+                        <p id="modalDescription" class="text-gray-300 mb-4"></p>
+                        <div class="flex items-center justify-between">
+                            <button onclick="openYouTube()" class="bg-gradient-to-r from-neon-purple to-neon-lavender px-6 py-3 rounded-lg text-white font-light hover:shadow-lg transition-all duration-300">
+                                Watch on YouTube
+                            </button>
+                            <span id="modalDate" class="text-sm text-gray-400"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Login Modal -->
+            <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeAdminModal()">
+                <div class="relative w-full max-w-md glassmorphism rounded-2xl overflow-hidden" onclick="event.stopPropagation()">
+                    <div class="p-8 text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-neon-purple to-neon-lavender rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg shadow-neon-purple/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-white">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                <path d="m7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-normal neon-text mb-2">Admin Access</h2>
+                        <p class="text-gray-400 mb-6">Enter password to continue</p>
+
+                        <form onsubmit="adminLogin(event)" class="space-y-6">
+                            <input
+                                type="password"
+                                id="adminPassword"
+                                placeholder="Enter admin password"
+                                class="w-full h-12 px-4 search-input rounded-lg text-white placeholder-gray-500 focus:outline-none transition-all duration-300"
+                                required
+                            >
+                            <button type="submit" class="w-full bg-gradient-to-r from-neon-purple to-neon-lavender py-3 rounded-lg text-white font-light hover:shadow-lg transition-all duration-300">
+                                Sign In
+                            </button>
+                        </form>
+
+                        <div class="mt-6 p-4 bg-glass border border-neon-purple/20 rounded-lg">
+                            <p class="text-sm text-gray-400 mb-2">Demo Access</p>
+                            <code class="text-neon-purple text-sm bg-neon-purple/10 px-2 py-1 rounded">password123</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Database Functions
+        // Video Metadata Fetcher with OpenAI API
+        class VideoMetadataFetcher {
+            static extractYouTubeId(url) {
+                const patterns = [
+                    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+                    /youtube\.com\/watch\?.*v=([^&\n?#]+)/
+                ];
+
+                for (const pattern of patterns) {
+                    const match = url.match(pattern);
+                    if (match) return match[1];
+                }
+                return null;
+            }
+
+            static getYouTubeThumbnail(videoId, quality = 'maxresdefault') {
+                return `https://img.youtube.com/vi/${videoId}/` + quality + '.jpg';
+            }
+
+            static async fetchVideoMetadata(videoUrl) {
+                try {
+                    console.log('🔧 VideoMetadataFetcher: Starting YouTube API metadata fetch for:', videoUrl);
+
+                    const videoId = this.extractYouTubeId(videoUrl);
+                    if (!videoId) {
+                        throw new Error('Invalid YouTube URL');
+                    }
+
+                    console.log('🎬 Extracted video ID:', videoId);
+
+                    // Get real YouTube thumbnail
+                    const thumbnail = this.getYouTubeThumbnail(videoId);
+                    console.log('🖼️ Generated thumbnail URL:', thumbnail);
+
+                    // Fetch video data from YouTube Data API v3
+                    const apiUrl = `${window.YOUTUBE_API_URL}?id=${videoId}&part=snippet,contentDetails,statistics&key=${window.YOUTUBE_API_KEY}`;
+                    console.log('🌐 YouTube API URL:', apiUrl);
+
+                    const response = await fetch(apiUrl);
+                    console.log('📡 YouTube API response status:', response.status);
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('❌ YouTube API error response:', errorText);
+                        throw new Error(`YouTube API error: ${response.status} - ${errorText}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('📊 YouTube API response data:', data);
+
+                    if (!data.items || data.items.length === 0) {
+                        throw new Error('Video not found or unavailable');
+                    }
+
+                    const videoData = data.items[0];
+                    const snippet = videoData.snippet;
+                    const contentDetails = videoData.contentDetails;
+
+                    // Convert YouTube category ID to our category system
+                    const categoryMapping = {
+                        '1': 'Entertainment',  // Film & Animation
+                        '2': 'Entertainment',  // Autos & Vehicles
+                        '10': 'Music',        // Music
+                        '15': 'Entertainment', // Pets & Animals
+                        '17': 'Sports',       // Sports
+                        '19': 'Entertainment', // Travel & Events
+                        '20': 'Entertainment', // Gaming
+                        '22': 'Vlogs',        // People & Blogs
+                        '23': 'Comedy',       // Comedy
+                        '24': 'Entertainment', // Entertainment
+                        '25': 'Entertainment', // News & Politics
+                        '26': 'Lifestyle',    // Howto & Style
+                        '27': 'Education',    // Education
+                        '28': 'Education'     // Science & Technology
+                    };
+
+                    // Convert ISO 8601 duration to readable format
+                    const formatDuration = (isoDuration) => {
+                        const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+                        if (!match) return '0:00';
+
+                        const hours = parseInt(match[1] || 0);
+                        const minutes = parseInt(match[2] || 0);
+                        const seconds = parseInt(match[3] || 0);
+
+                        if (hours > 0) {
+                            return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        } else {
+                            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                        }
+                    };
+
+                    const metadata = {
+                        title: snippet.title,
+                        description: snippet.description ? snippet.description.substring(0, 150) : 'Video content from YouTube',
+                        category: categoryMapping[snippet.categoryId] || 'Entertainment',
+                        duration: formatDuration(contentDetails.duration),
+                        channel: snippet.channelTitle,
+                        tags: snippet.tags || ['video', 'youtube'],
+                        thumbnail: thumbnail,
+                        url: videoUrl,
+                        videoId: videoId,
+                        publishedAt: snippet.publishedAt,
+                        viewCount: videoData.statistics?.viewCount || '0'
+                    };
+
+                    console.log('✅ Final YouTube API metadata object:', metadata);
+                    return metadata;
+
+                } catch (error) {
+                    console.error('Error fetching metadata:', error);
+
+                    // Fallback metadata with real YouTube thumbnail
+                    const videoId = this.extractYouTubeId(videoUrl);
+                    return {
+                        title: 'Video from YouTube',
+                        description: 'Video content from YouTube',
+                        category: 'Entertainment',
+                        duration: '0:00',
+                        channel: 'Unknown Channel',
+                        tags: ['video', 'youtube'],
+                        thumbnail: videoId ? this.getYouTubeThumbnail(videoId) : '',
+                        url: videoUrl,
+                        videoId: videoId,
+                        error: error.message
+                    };
+                }
+            }
+        }
+
+        // Make VideoMetadataFetcher globally accessible
+        window.VideoMetadataFetcher = VideoMetadataFetcher;
+
+        class VideoDatabase {
+            constructor() {
+                this.collectionName = 'videos';
+                this.isFirebaseReady = false;
+
+                // Wait for Firebase to be ready
+                this.waitForFirebase();
+            }
+
+            async waitForFirebase() {
+                let attempts = 0;
+                while (!window.firebaseReady && attempts < 50) {
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                    attempts++;
+                }
+
+                if (!window.firebaseReady) {
+                    console.error('Firebase failed to initialize, using local data');
+                    this.loadSampleData();
+                    return;
+                }
+
+                this.isFirebaseReady = true;
+                console.log('VideoDatabase ready');
+
+                // Load videos from Firebase on startup
+                await this.loadVideos();
+            }
+
+            async loadVideos() {
+                try {
+                    if (!this.isFirebaseReady) {
+                        console.log('Firebase not ready yet, waiting...');
+                        return;
+                    }
+
+                    console.log('Loading videos from Firebase...');
+                    const { collection, getDocs, orderBy, query } = window.firebaseUtils;
+                    const videosRef = collection(window.db, this.collectionName);
+
+                    // Try simple query first, then add ordering
+                    let querySnapshot;
+                    try {
+                        const q = query(videosRef, orderBy('dateAdded', 'desc'));
+                        querySnapshot = await getDocs(q);
+                    } catch (orderError) {
+                        console.log('Ordered query failed, trying simple query:', orderError);
+                        querySnapshot = await getDocs(videosRef);
+                    }
+
+                    videos = [];
+                    querySnapshot.forEach((doc) => {
+                        videos.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+
+                    console.log(`Found ${videos.length} videos in Firebase`);
+
+                    // If no videos in Firebase, initialize with sample data
+                    if (videos.length === 0) {
+                        console.log('No videos found, initializing sample data...');
+                        await this.initializeSampleData();
+                    } else {
+                        renderVideos();
+                    }
+
+                    console.log(`Loaded ${videos.length} videos from Firebase`);
+                } catch (error) {
+                    console.error('Error loading videos from Firebase:', error);
+                    console.log('Falling back to sample data...');
+                    // Fallback to sample data
+                    this.loadSampleData();
+                }
+            }
+
+            async ensureAuthenticated() {
+                if (!window.auth.currentUser) {
+                    console.log('🔐 Authenticating for Firebase operations...');
+                    const { signInAnonymously } = window.firebaseUtils;
+                    await signInAnonymously(window.auth);
+                    console.log('✅ Authentication successful');
+                }
+            }
+
+            async addVideo(videoData) {
+                try {
+                    await this.ensureAuthenticated();
+                    const { collection, addDoc } = window.firebaseUtils;
+                    const videosRef = collection(window.db, this.collectionName);
+
+                    const docRef = await addDoc(videosRef, {
+                        ...videoData,
+                        dateAdded: new Date().toISOString()
+                    });
+
+                    // Add to local array with Firebase ID
+                    const newVideo = {
+                        id: docRef.id,
+                        ...videoData,
+                        dateAdded: new Date().toISOString()
+                    };
+                    videos.unshift(newVideo);
+
+                    console.log('Video added to Firebase:', docRef.id);
+
+                    // Force re-render after successful add
+                    renderVideos();
+                    if (document.getElementById('adminDashboard')) {
+                        renderAdminVideos();
+                    }
+
+                    return docRef.id;
+                } catch (error) {
+                    console.error('Error adding video:', error);
+                    throw error;
+                }
+            }
+
+            async updateVideo(videoId, updates) {
+                try {
+                    const { doc, updateDoc } = window.firebaseUtils;
+                    const videoRef = doc(window.db, this.collectionName, videoId);
+
+                    await updateDoc(videoRef, updates);
+
+                    // Update local array
+                    const index = videos.findIndex(v => v.id === videoId);
+                    if (index !== -1) {
+                        videos[index] = { ...videos[index], ...updates };
+                    }
+
+                    console.log('Video updated in Firebase:', videoId);
+                } catch (error) {
+                    console.error('Error updating video:', error);
+                    throw error;
+                }
+            }
+
+            async deleteVideo(videoId) {
+                try {
+                    await this.ensureAuthenticated();
+                    console.log('VideoDatabase: Starting delete for videoId:', videoId);
+
+                    if (!videoId) {
+                        throw new Error('Video ID is required for deletion');
+                    }
+
+                    const { doc, deleteDoc } = window.firebaseUtils;
+                    if (!doc || !deleteDoc) {
+                        throw new Error('Firebase utilities not available');
+                    }
+
+                    const videoRef = doc(window.db, this.collectionName, videoId);
+                    console.log('VideoDatabase: Created document reference');
+
+                    await deleteDoc(videoRef);
+                    console.log('VideoDatabase: Document deleted from Firebase');
+
+                    // Remove from local array
+                    const index = videos.findIndex(v => v.id === videoId);
+                    if (index !== -1) {
+                        videos.splice(index, 1);
+                        console.log('VideoDatabase: Removed from local array at index', index);
+                    } else {
+                        console.warn('VideoDatabase: Video not found in local array');
+                    }
+
+                    console.log('Video deleted from Firebase:', videoId);
+
+                    // Force re-render after successful delete
+                    renderVideos();
+                    if (document.getElementById('adminDashboard')) {
+                        renderAdminVideos();
+                    }
+                } catch (error) {
+                    console.error('VideoDatabase Error deleting video:', error);
+                    console.error('VideoDatabase Error details:', {
+                        message: error.message,
+                        code: error.code,
+                        stack: error.stack
+                    });
+                    throw error;
+                }
+            }
+
+            async initializeSampleData() {
+                console.log('Initializing sample data in Firebase...');
+                try {
+                    let addedCount = 0;
+                    for (const video of sampleVideos) {
+                        try {
+                            await this.addVideo(video);
+                            addedCount++;
+                            console.log(`Added sample video ${addedCount}/${sampleVideos.length}: ${video.title}`);
+                        } catch (error) {
+                            console.error(`Failed to add sample video "${video.title}":`, error);
+                        }
+                    }
+                    console.log(`Successfully added ${addedCount} sample videos to Firebase`);
+
+                    if (addedCount > 0) {
+                        renderVideos();
+                    } else {
+                        console.log('No videos were added to Firebase, using local sample data');
+                        this.loadSampleData();
+                    }
+                } catch (error) {
+                    console.error('Error initializing sample data:', error);
+                    this.loadSampleData();
+                }
+            }
+
+            loadSampleData() {
+                videos = [...sampleVideos];
+                renderVideos();
+            }
+        }
+
+        // Initialize database
+        const videoDb = new VideoDatabase();
+
+        // Sample video data (fallback)
+        const sampleVideos = [
+            {
+                id: '1',
+                title: 'Lofi Hip Hop Radio - Beats to Study/Chill',
+                description: '24/7 lofi hip hop radio for studying, working, and relaxing',
+                thumbnail: 'https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
+                category: 'Music',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+                duration: 'LIVE'
+            },
+            {
+                id: '2',
+                title: 'The Joe Rogan Experience - Best Moments',
+                description: 'Compilation of the most interesting conversations from JRE',
+                thumbnail: 'https://img.youtube.com/vi/BKwrYrC2LLI/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=BKwrYrC2LLI',
+                category: 'Podcasts',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(),
+                duration: '2:15:30'
+            },
+            {
+                id: '3',
+                title: 'Best Basketball Highlights 2024',
+                description: 'Amazing basketball plays and dunks from this season',
+                thumbnail: 'https://img.youtube.com/vi/Q4kjGBuddhE/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=Q4kjGBuddhE',
+                category: 'Sports',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
+                duration: '12:45'
+            },
+            {
+                id: '4',
+                title: 'Stand-Up Comedy Special 2024',
+                description: 'Hilarious stand-up comedy performance by rising comedian',
+                thumbnail: 'https://img.youtube.com/vi/8KnZB_T3WEA/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=8KnZB_T3WEA',
+                category: 'Comedy',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+                duration: '35:15'
+            },
+            {
+                id: '5',
+                title: 'Quantum Physics Explained Simply',
+                description: 'Complex quantum physics concepts made easy to understand',
+                thumbnail: 'https://img.youtube.com/vi/A9tKncAdlHQ/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=A9tKncAdlHQ',
+                category: 'Education',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 36).toISOString(),
+                duration: '22:30'
+            },
+            {
+                id: '6',
+                title: 'Movie Trailer Mashup 2024',
+                description: 'Epic compilation of the best movie trailers this year',
+                thumbnail: 'https://img.youtube.com/vi/ZSzeFFsKEt4/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=ZSzeFFsKEt4',
+                category: 'Entertainment',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(),
+                duration: '15:20'
+            },
+            {
+                id: '7',
+                title: 'Epic Electronic Music Mix 2024',
+                description: 'High-energy electronic dance music for workouts and parties',
+                thumbnail: 'https://img.youtube.com/vi/KoJVYlnF_uE/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=KoJVYlnF_uE',
+                category: 'Music',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 60).toISOString(),
+                duration: '1:32:45'
+            },
+            {
+                id: '8',
+                title: 'Tech Talk: Future of AI',
+                description: 'Industry experts discuss the future of artificial intelligence',
+                thumbnail: 'https://img.youtube.com/vi/x7X9w_GIm1s/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=x7X9w_GIm1s',
+                category: 'Podcasts',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(),
+                duration: '45:20'
+            },
+            {
+                id: '9',
+                title: 'World Cup Final Best Moments',
+                description: 'Most exciting moments from the recent World Cup final match',
+                thumbnail: 'https://img.youtube.com/vi/8HI9EYGld4M/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=8HI9EYGld4M',
+                category: 'Sports',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 96).toISOString(),
+                duration: '8:33'
+            },
+            {
+                id: '10',
+                title: 'Minimalist Home Tour 2024',
+                description: 'Beautiful minimalist home design and organization inspiration',
+                thumbnail: 'https://img.youtube.com/vi/j0lSpNtjPM8/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=j0lSpNtjPM8',
+                category: 'Lifestyle',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 120).toISOString(),
+                duration: '18:42'
+            },
+            {
+                id: '11',
+                title: 'Planet Earth: Hidden Ecosystems',
+                description: 'Stunning nature documentary showcasing Earth\'s hidden worlds',
+                thumbnail: 'https://img.youtube.com/vi/yDriIZ8UF6k/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=yDriIZ8UF6k',
+                category: 'Documentaries',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 144).toISOString(),
+                duration: '58:30'
+            },
+            {
+                id: '12',
+                title: 'Coding Interview Preparation',
+                description: 'Essential tips and tricks for acing your next coding interview',
+                thumbnail: 'https://img.youtube.com/vi/A9tKncAdlHQ/maxresdefault.jpg',
+                url: 'https://www.youtube.com/watch?v=A9tKncAdlHQ',
+                category: 'Education',
+                dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 168).toISOString(),
+                duration: '42:15'
+            }
+        ];
+
+        let currentVideo = null;
+        let currentCategory = 'All';
+        let currentSearchQuery = '';
+
+        // Initialize the app
+        console.log('🚀 Urban Directory v2.1 - Fixed Delete Function - Loaded at:', new Date().toISOString());
+        console.log('🔍 DEBUG MODE ACTIVATED - Checking Firebase status...');
+
+        // Add Firebase connection test
+        window.testFirebaseConnection = async function() {
+            console.log('🧪 TESTING FIREBASE CONNECTION...');
+            try {
+                if (!window.db) {
+                    console.error('❌ Firebase database not initialized');
+                    return;
+                }
+
+                const { collection, getDocs } = window.firebaseUtils;
+                const videosRef = collection(window.db, 'videos');
+                const snapshot = await getDocs(videosRef);
+
+                console.log('✅ Firebase connection successful');
+                console.log(`📊 Found ${snapshot.size} videos in database`);
+                snapshot.forEach(doc => {
+                    console.log(`📽️ Video: ${doc.data().title} (ID: ${doc.id})`);
+                });
+
+                return true;
+            } catch (error) {
+                console.error('❌ Firebase connection failed:', error);
+                return false;
+            }
+        };
+
+        // Auto-test Firebase after 3 seconds
+        setTimeout(() => {
+            console.log('🚀 Auto-testing Firebase connection...');
+            window.testFirebaseConnection();
+        }, 3000);
+
+        // Function to fix broken thumbnails in Firebase
+        window.fixBrokenThumbnails = async function() {
+            console.log('🔧 Fixing broken thumbnails in Firebase...');
+            try {
+                const { collection, getDocs, doc, updateDoc } = window.firebaseUtils;
+                const videosRef = collection(window.db, 'videos');
+                const snapshot = await getDocs(videosRef);
+
+                let fixedCount = 0;
+                const batch = [];
+
+                snapshot.forEach((docSnapshot) => {
+                    const data = docSnapshot.data();
+                    if (data.thumbnail && data.thumbnail.includes('i.ytimg.com')) {
+                        const categories = {
+                            'Music': 'https://via.placeholder.com/400x300/4f46e5/ffffff?text=Music',
+                            'Podcasts': 'https://via.placeholder.com/400x300/ef4444/ffffff?text=Podcast',
+                            'Entertainment': 'https://via.placeholder.com/400x300/f59e0b/ffffff?text=Entertainment',
+                            'Education': 'https://via.placeholder.com/400x300/10b981/ffffff?text=Education',
+                            'Sports': 'https://via.placeholder.com/400x300/06b6d4/ffffff?text=Sports',
+                            'Documentaries': 'https://via.placeholder.com/400x300/8b5cf6/ffffff?text=Documentary',
+                            'Gaming': 'https://via.placeholder.com/400x300/ec4899/ffffff?text=Gaming',
+                            'Comedy': 'https://via.placeholder.com/400x300/84cc16/ffffff?text=Comedy',
+                            'Lifestyle': 'https://via.placeholder.com/400x300/f97316/ffffff?text=Lifestyle'
+                        };
+
+                        const videoId = VideoMetadataFetcher.extractYouTubeId(data.url);
+                        const newThumbnail = videoId ? VideoMetadataFetcher.getYouTubeThumbnail(videoId) : categories[data.category] || 'https://img.youtube.com/vi/default/maxresdefault.jpg';
+
+                        batch.push({
+                            docRef: doc(window.db, 'videos', docSnapshot.id),
+                            newThumbnail: newThumbnail
+                        });
+                        fixedCount++;
+                    }
+                });
+
+                console.log(`📊 Found ${fixedCount} videos with broken thumbnails`);
+
+                for (const item of batch) {
+                    await updateDoc(item.docRef, { thumbnail: item.newThumbnail });
+                    console.log(`✅ Fixed thumbnail for video`);
+                }
+
+                console.log(`🎉 Fixed ${fixedCount} broken thumbnails!`);
+
+                // Only show alert if thumbnails were actually fixed
+                if (fixedCount > 0) {
+                    alert(`✅ Fixed ${fixedCount} broken thumbnails! Please refresh the page.`);
+                }
+
+            } catch (error) {
+                console.error('❌ Error fixing thumbnails:', error);
+                alert('❌ Error fixing thumbnails: ' + error.message);
+            }
+        };
+
+        // Auto-fix broken thumbnails after Firebase connection test
+        setTimeout(() => {
+            if (window.db && window.firebaseUtils) {
+                console.log('🔧 Auto-fixing broken thumbnails...');
+                window.fixBrokenThumbnails();
+            }
+        }, 5000);
+        document.addEventListener('DOMContentLoaded', function() {
+            renderVideos();
+        });
+
+        function renderVideos() {
+            const videoGrid = document.getElementById('videoGrid');
+            if (!videoGrid) {
+                console.log('🔍 videoGrid not found - likely on admin page, skipping renderVideos');
+                return;
+            }
+            const filteredVideos = getFilteredVideos();
+
+            videoGrid.innerHTML = '';
+
+            if (filteredVideos.length === 0) {
+                videoGrid.innerHTML = `
+                    <div class="col-span-full text-center py-16">
+                        <h3 class="text-xl font-normal text-white mb-2">No Videos Found</h3>
+                        <p class="text-gray-400 max-w-md mx-auto mb-6">No videos match your current search and filter criteria. Try adjusting your filters or search terms.</p>
+                        <button onclick="clearFilters()" class="bg-transparent border border-white/30 px-6 py-3 rounded-lg text-white font-light hover:bg-white/10 transition-all duration-300">
+                            Clear All Filters
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredVideos.forEach(video => {
+                const videoCard = createVideoCard(video);
+                videoGrid.appendChild(videoCard);
+            });
+        }
+
+        function createVideoCard(video) {
+            const card = document.createElement('div');
+            card.className = 'video-card glassmorphism-card rounded-xl overflow-hidden neon-glow cursor-pointer';
+            card.onclick = () => openVideoModal(video);
+
+            card.innerHTML = `
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="${video.thumbnail}" alt="${video.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy"
+                         onerror="this.src='https://via.placeholder.com/400x300/6366f1/ffffff?text=Video'">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-neon-purple/90 rounded-full flex items-center justify-center shadow-lg shadow-neon-purple/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white ml-1">
+                                <path d="m9.5 16.5 7-4.5-7-4.5v9Z" />
+                            </svg>
+                        </div>
+                    </div>
+                    ${video.duration ? `<div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">${video.duration}</div>` : ''}
+                </div>
+                <div class="p-2 sm:p-4">
+                    <h3 class="text-sm sm:text-base font-normal text-white hover:text-neon-lavender transition-colors duration-300 mb-1 sm:mb-2 line-clamp-2">
+                        ${truncateText(video.title, 60)}
+                    </h3>
+                    <p class="text-gray-400 text-sm mb-3 line-clamp-2 hidden sm:block">
+                        ${truncateText(video.description, 100)}
+                    </p>
+                    <div class="flex items-center justify-between text-xs text-gray-500">
+                        <span>${formatDate(video.dateAdded)}</span>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function getFilteredVideos() {
+            return videos.filter(video => {
+                const matchesCategory = currentCategory === 'All' || video.category === currentCategory;
+                const matchesSearch = !currentSearchQuery ||
+                    video.title.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                    video.description.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                    video.category.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+        }
+
+        function filterVideos() {
+            currentSearchQuery = document.getElementById('searchInput').value;
+            renderVideos();
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+
+            renderVideos();
+        }
+
+        function openVideoModal(video) {
+            currentVideo = video;
+            const modal = document.getElementById('videoModal');
+            const videoContainer = document.getElementById('videoContainer');
+
+            document.getElementById('modalTitle').textContent = video.title;
+            document.getElementById('modalCategory').textContent = video.category;
+            document.getElementById('modalDescription').textContent = video.description;
+            document.getElementById('modalDate').textContent = `Added ${formatDate(video.dateAdded)}`;
+
+            const videoId = extractYouTubeId(video.url);
+            if (videoId) {
+                videoContainer.innerHTML = `
+                    <iframe
+                        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1"
+                        title="${video.title}"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        class="w-full h-full">
+                    </iframe>
+                `;
+            }
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const videoContainer = document.getElementById('videoContainer');
+
+            modal.style.display = 'none';
+            videoContainer.innerHTML = '';
+            document.body.style.overflow = 'unset';
+            currentVideo = null;
+        }
+
+        function openYouTube() {
+            if (currentVideo) {
+                window.open(currentVideo.url, '_blank');
+            }
+        }
+
+        function showAdminLogin() {
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function adminLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+
+            if (password === 'password123') {
+                // Store admin session
+                sessionStorage.setItem('admin_authenticated', 'true');
+                closeAdminModal();
+                showAdminDashboard();
+            } else {
+                alert('Invalid password. Please try again.');
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        function showAdminDashboard() {
+            // Remove existing admin dashboard if it exists
+            const existingDashboard = document.getElementById('adminDashboard');
+            if (existingDashboard) {
+                existingDashboard.remove();
+            }
+
+            // Change header navigation to show Home instead of Admin and add Logout button
+            const headerNav = document.querySelector('header nav .flex.items-center');
+            if (headerNav) {
+                headerNav.innerHTML = `
+                    <a href="#" class="text-gray-400 hover:text-neon-lavender transition-colors mr-4" onclick="goHome()">Home</a>
+                    <a href="#" class="text-gray-400 hover:text-neon-lavender transition-colors" onclick="adminLogout()">Logout</a>
+                `;
+            }
+
+            // Get the main element and replace its content entirely
+            const mainElement = document.querySelector('main');
+
+            // Store original content for restoration
+            if (!window.originalMainContent) {
+                window.originalMainContent = mainElement.innerHTML;
+            }
+
+            // Replace main content with admin dashboard
+            mainElement.id = 'adminDashboard';
+            mainElement.innerHTML = `
+                    <!-- Admin Header -->
+                    <div class="mb-6 text-center py-4 sm:py-8 animate-blur-in">
+                        <div>
+                            <h1 class="text-3xl sm:text-4xl md:text-6xl font-light mb-4">
+                                <span class="bg-gradient-to-r from-neon-purple via-neon-lavender to-neon-purple bg-clip-text text-transparent">
+                                    Admin Dashboard
+                                </span>
+                            </h1>
+                            <p class="text-lg sm:text-xl text-gray-300 mb-6 max-w-2xl mx-auto px-4 font-semibold">
+                                Manage your video directory
+                            </p>
+                        <!-- Deployment timestamp: 2025-09-22-15:45 -->
+                        </div>
+                    </div>
+
+                    <!-- Video Management -->
+                    <div class="animate-fade-in">
+                        <div class="mb-6">
+                            </div>
+
+                        <!-- Admin Search Bar with Add Video Button -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-6">
+                            <div class="flex-1 max-w-full sm:max-w-2xl">
+                                <div class="relative">
+                                    <input
+                                        type="text"
+                                        id="adminSearchInput"
+                                        placeholder="Search videos..."
+                                        class="w-full h-12 px-4 pr-12 search-input rounded-lg text-white placeholder-gray-500 focus:outline-none transition-all duration-300"
+                                        oninput="filterAdminVideos()"
+                                    >
+                                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-neon-purple hover:text-neon-lavender transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <path d="m21 21-4.35-4.35"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <button onclick="showAddVideoModal()" class="moving-border-btn px-6 py-3 rounded-lg text-white font-light h-12 whitespace-nowrap">
+                                Add Video
+                            </button>
+                        </div>
+
+                        <div id="adminVideoGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <!-- Admin video cards will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Video Modal -->
+                <div id="addVideoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeAddVideoModal()">
+                    <div class="relative w-full max-w-2xl glassmorphism rounded-2xl overflow-hidden" onclick="event.stopPropagation()">
+                        <div class="flex items-center justify-between p-6 border-b border-neon-purple/20">
+                            <div>
+                                <h2 class="text-2xl font-normal text-white">Add New Video</h2>
+                                <p class="text-gray-400 mt-1">Just paste a YouTube URL - AI will handle the rest!</p>
+                            </div>
+                            <button onclick="closeAddVideoModal()" class="p-2 hover:bg-glass rounded-lg transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-400 hover:text-white">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <form onsubmit="addNewVideo(event)" class="p-6 space-y-6">
+                            <div>
+                                <label class="block text-sm font-light text-gray-300 mb-2">YouTube URL *</label>
+                                <input type="url" id="newVideoUrl" placeholder="https://www.youtube.com/watch?v=..."
+                                       class="w-full h-12 px-4 search-input rounded-lg text-white placeholder-gray-500 focus:outline-none transition-all duration-300"
+                                       oninput="onUrlChange()" onpaste="setTimeout(onUrlChange, 100)" required>
+                                <div id="fetchingStatus" style="display: none;" class="mt-2 text-sm text-blue-400">
+                                    🤖 Generating metadata...
+                                </div>
+                            </div>
+
+                            <!-- Hidden form fields for metadata (populated by AI) -->
+                            <input type="hidden" id="newVideoTitle">
+                            <input type="hidden" id="newVideoDescription">
+                            <input type="hidden" id="newVideoCategory">
+                            <input type="hidden" id="newVideoDuration">
+
+                            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-neon-purple/20">
+                                <button type="button" onclick="closeAddVideoModal()" class="enhanced-btn px-6 py-3 rounded-lg">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="moving-border-btn px-6 py-3 rounded-lg text-white font-light">
+                                    Preview Video
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+            `;
+
+            // Render admin videos into the new content
+            renderAdminVideos();
+        }
+    </script>
+
+        <!-- Edit Video Modal -->
+        <div id="editVideoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeEditVideoModal()">
+            <div class="relative w-full max-w-4xl glassmorphism rounded-2xl overflow-hidden max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-between p-6 border-b border-neon-purple/20 flex-shrink-0">
+                    <div>
+                        <h2 class="text-2xl font-normal text-white">Edit Video Details</h2>
+                        <p class="text-gray-400 mt-1">Modify video metadata and thumbnail</p>
+                    </div>
+                    <button onclick="closeEditVideoModal()" class="p-2 hover:bg-glass rounded-lg transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-400 hover:text-white">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto flex-1">
+                    <form id="editVideoForm">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Thumbnail Preview and Upload -->
+                            <div>
+                                <h3 class="text-lg font-normal text-white mb-3">Thumbnail</h3>
+                                <div class="aspect-video rounded-lg overflow-hidden bg-gray-800 mb-4">
+                                    <img id="editThumbnailPreview" src="" alt="Video thumbnail" class="w-full h-full object-cover">
+                                </div>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-sm font-light text-gray-300 mb-2">Upload New Thumbnail</label>
+                                        <input type="file" id="editThumbnailFile" accept="image/*" onchange="handleThumbnailUpload(this)"
+                                               class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white
+                                                      file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0
+                                                      file:text-sm file:font-light file:bg-neon-purple file:text-white
+                                                      hover:file:bg-neon-purple/80 focus:outline-none focus:border-neon-purple">
+                                    </div>
+                                    <div class="text-sm text-gray-400">
+                                        <p><strong>Video URL:</strong> <span id="editVideoUrl"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Metadata Fields -->
+                            <div>
+                                <h3 class="text-lg font-normal text-white mb-3">Video Details</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="editVideoTitle" class="block text-sm font-light text-gray-300 mb-2">Title</label>
+                                        <input type="text" id="editVideoTitle"
+                                               class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white
+                                                      placeholder-gray-400 focus:outline-none focus:border-neon-purple"
+                                               placeholder="Enter video title">
+                                    </div>
+                                    <div>
+                                        <label for="editVideoDescription" class="block text-sm font-light text-gray-300 mb-2">Description</label>
+                                        <textarea id="editVideoDescription" rows="4"
+                                                  class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white
+                                                         placeholder-gray-400 focus:outline-none focus:border-neon-purple resize-none"
+                                                  placeholder="Enter video description"></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-light text-gray-300 mb-3">Categories</label>
+                                            <div id="editCategoryCheckboxes" class="checkbox-group max-h-48 overflow-y-auto pr-2">
+                                                <div class="checkbox-item" data-category="Music" onclick="toggleEditCategory('Music')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Music</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Podcasts" onclick="toggleEditCategory('Podcasts')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Podcasts</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Sports" onclick="toggleEditCategory('Sports')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Sports</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Comedy" onclick="toggleEditCategory('Comedy')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Comedy</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Education" onclick="toggleEditCategory('Education')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Education</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Entertainment" onclick="toggleEditCategory('Entertainment')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Entertainment</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Lifestyle" onclick="toggleEditCategory('Lifestyle')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Lifestyle</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Documentaries" onclick="toggleEditCategory('Documentaries')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Documentaries</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Interviews" onclick="toggleEditCategory('Interviews')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Interviews</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Vlogs" onclick="toggleEditCategory('Vlogs')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Vlogs</span>
+                                                </div>
+                                                <div class="checkbox-item" data-category="Others" onclick="toggleEditCategory('Others')">
+                                                    <div class="custom-checkbox">
+                                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                            <path d="M20 6L9 17l-5-5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="checkbox-label">Others</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="editVideoPostDate" class="block text-sm font-light text-gray-300 mb-2">Post Date</label>
+                                            <input type="date" id="editVideoPostDate"
+                                                   class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white
+                                                          placeholder-gray-400 focus:outline-none focus:border-neon-purple
+                                                          [color-scheme:dark]">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="flex items-center justify-end space-x-4 p-6 border-t border-neon-purple/20 flex-shrink-0">
+                    <button type="button" onclick="closeEditVideoModal()" class="enhanced-btn px-6 py-3 rounded-lg">
+                        Cancel
+                    </button>
+                    <button type="button" onclick="saveVideoEdits()" class="moving-border-btn px-6 py-3 rounded-lg text-white font-light">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Confirmation Modal -->
+        <div id="confirmVideoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeConfirmVideoModal()">
+            <div class="relative w-full max-w-4xl glassmorphism rounded-2xl overflow-hidden max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-between p-6 border-b border-neon-purple/20 flex-shrink-0">
+                    <div>
+                        <h2 class="text-2xl font-normal text-white">Confirm Video Details</h2>
+                        <p class="text-gray-400 mt-1">Review the automatically generated metadata</p>
+                    </div>
+                    <button onclick="closeConfirmVideoModal()" class="p-2 hover:bg-glass rounded-lg transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-400 hover:text-white">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto flex-1">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Thumbnail Preview -->
+                        <div>
+                            <h3 class="text-lg font-normal text-white mb-3">Video Preview</h3>
+                            <div class="aspect-video rounded-lg overflow-hidden bg-gray-800 mb-4">
+                                <img id="confirmThumbnail" src="" alt="Video thumbnail" class="w-full h-full object-cover">
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <p><strong>Video URL:</strong> <span id="confirmVideoUrl"></span></p>
+                                <p><strong>Post Date:</strong> <span id="confirmPostDate"></span></p>
+                            </div>
+                        </div>
+
+                        <!-- Metadata Details -->
+                        <div>
+                            <h3 class="text-lg font-normal text-white mb-3">Generated Metadata</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-light text-gray-300 mb-1">Title</label>
+                                    <p id="confirmTitle" class="text-white bg-gray-800/50 p-3 rounded-lg"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-light text-gray-300 mb-1">Description</label>
+                                    <p id="confirmDescription" class="text-white bg-gray-800/50 p-3 rounded-lg max-h-32 overflow-y-auto"></p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-light text-gray-300 mb-3">Categories (Editable)</label>
+                                        <div id="confirmCategoryCheckboxes" class="checkbox-group max-h-32 overflow-y-auto pr-2">
+                                            <div class="checkbox-item" data-category="Music" onclick="toggleConfirmCategory('Music')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Music</span>
+                                            </div>
+                                            <div class="checkbox-item" data-category="Podcasts" onclick="toggleConfirmCategory('Podcasts')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Podcasts</span>
+                                            </div>
+                                            <div class="checkbox-item" data-category="Sports" onclick="toggleConfirmCategory('Sports')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Sports</span>
+                                            </div>
+                                            <div class="checkbox-item" data-category="Comedy" onclick="toggleConfirmCategory('Comedy')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Comedy</span>
+                                            </div>
+                                            <div class="checkbox-item" data-category="Education" onclick="toggleConfirmCategory('Education')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Education</span>
+                                            </div>
+                                            <div class="checkbox-item" data-category="Entertainment" onclick="toggleConfirmCategory('Entertainment')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Entertainment</span>
+                                            </div>
+                                            <div class="checkbox-item" data-category="Lifestyle" onclick="toggleConfirmCategory('Lifestyle')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Lifestyle</span>
+                                            </div>
+                                            <div class="checkbox-item" data-category="Documentaries" onclick="toggleConfirmCategory('Documentaries')">
+                                                <div class="custom-checkbox">
+                                                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                        <path d="M20 6L9 17l-5-5"/>
+                                                    </svg>
+                                                </div>
+                                                <span class="checkbox-label">Documentaries</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-light text-gray-300 mb-1">Duration</label>
+                                        <p id="confirmDuration" class="text-white bg-gray-800/50 p-3 rounded-lg"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="flex items-center justify-end space-x-4 p-6 border-t border-neon-purple/20 flex-shrink-0">
+                    <button type="button" onclick="goBackToEdit()" class="enhanced-btn px-6 py-3 rounded-lg">
+                        ← Edit Details
+                    </button>
+                    <button type="button" onclick="confirmAddVideo()" class="moving-border-btn px-6 py-3 rounded-lg text-white font-light">
+                        ✅ Confirm & Add Video
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        function renderAdminVideos() {
+            const adminGrid = document.getElementById('adminVideoGrid');
+            if (!adminGrid) return;
+
+            // Get search query
+            const searchInput = document.getElementById('adminSearchInput');
+            const searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
+
+            // Filter videos based on search
+            const filteredVideos = videos.filter(video => {
+                if (!searchQuery) return true;
+                return video.title.toLowerCase().includes(searchQuery) ||
+                       video.description.toLowerCase().includes(searchQuery) ||
+                       video.category.toLowerCase().includes(searchQuery);
+            });
+
+            adminGrid.innerHTML = '';
+
+            if (filteredVideos.length === 0) {
+                adminGrid.innerHTML = `
+                    <div class="col-span-full text-center py-16">
+                        <h3 class="text-xl font-normal text-white mb-2">No Videos Found</h3>
+                        <p class="text-gray-400 max-w-md mx-auto mb-6">${searchQuery ? 'No videos match your search criteria.' : 'No videos available.'}</p>
+                        ${searchQuery ? '<button onclick="clearAdminSearch()" class="bg-gradient-to-r from-neon-purple to-neon-lavender px-6 py-3 rounded-lg text-white font-light hover:shadow-lg transition-all duration-300">Clear Search</button>' : ''}
+                    </div>
+                `;
+                return;
+            }
+
+            filteredVideos.forEach(video => {
+                const adminCard = document.createElement('div');
+                adminCard.className = 'glassmorphism-card rounded-xl overflow-hidden neon-glow';
+                adminCard.innerHTML = `
+                    <div class="relative aspect-video overflow-hidden">
+                        <img src="${video.thumbnail}" alt="${video.title}" class="w-full h-full object-cover" loading="lazy"
+                             onerror="this.src='https://via.placeholder.com/400x300/6366f1/ffffff?text=Video'">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-sm font-normal text-white mb-2 line-clamp-2">${truncateText(video.title, 50)}</h3>
+                        <div class="flex justify-end">
+                            <div class="flex space-x-2">
+                                <button onclick="editVideo('${video.id}')" class="enhanced-btn p-2 rounded-lg text-blue-400" title="Edit">
+                                    Edit
+                                </button>
+                                <button onclick="deleteVideo('${video.id}')" class="enhanced-btn p-2 rounded-lg text-red-400" title="Delete">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                adminGrid.appendChild(adminCard);
+            });
+        }
+
+        function showAddVideoModal() {
+            document.getElementById('addVideoModal').style.display = 'flex';
+        }
+
+        function closeAddVideoModal() {
+            document.getElementById('addVideoModal').style.display = 'none';
+            // Reset form
+            document.getElementById('newVideoUrl').value = '';
+            document.getElementById('newVideoTitle').value = '';
+            document.getElementById('newVideoDescription').value = '';
+            document.getElementById('newVideoCategory').value = '';
+        }
+
+        // Function to handle URL input changes
+        async function onUrlChange() {
+            const urlInput = document.getElementById('newVideoUrl');
+            const url = urlInput.value.trim();
+
+            // Check if it's a valid YouTube URL
+            if (url && (url.includes('youtube.com/watch') || url.includes('youtu.be/'))) {
+                // Clear previous status
+                const statusDiv = document.getElementById('fetchingStatus');
+                statusDiv.style.display = 'none';
+
+                // Wait a moment to ensure user has finished typing
+                clearTimeout(window.urlChangeTimeout);
+                window.urlChangeTimeout = setTimeout(async () => {
+                    try {
+                        await fetchVideoMetadata(url);
+                    } catch (error) {
+                        console.error('Failed to fetch metadata:', error);
+                        statusDiv.innerHTML = '❌ Failed to generate metadata';
+                        statusDiv.className = 'mt-2 text-sm text-red-400';
+                        statusDiv.style.display = 'block';
+                    }
+                }, 1000); // Wait 1 second after user stops typing
+            }
+        }
+
+        // Auto-fetch metadata when YouTube URL is entered
+        async function fetchVideoMetadata(url) {
+            const statusDiv = document.getElementById('fetchingStatus');
+
+            try {
+                // Show fetching status
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = '🤖 Generating metadata...';
+                statusDiv.className = 'mt-2 text-sm text-blue-400';
+
+                console.log('🔍 Fetching metadata for URL:', url);
+
+                // Fetch metadata using OpenAI
+                const metadata = await VideoMetadataFetcher.fetchVideoMetadata(url);
+
+                console.log('✅ Metadata received:', metadata);
+
+                // Validate that we received proper metadata
+                if (!metadata || typeof metadata !== 'object') {
+                    throw new Error('Invalid metadata response from AI service');
+                }
+
+                // Update hidden form fields with proper fallbacks
+                const title = metadata.title && metadata.title.trim() !== '' ? metadata.title : 'AI-Generated Video Title';
+                const description = metadata.description && metadata.description.trim() !== '' ? metadata.description : 'AI-Generated description for this video content';
+                const category = metadata.category && metadata.category.trim() !== '' ? metadata.category : 'Entertainment';
+                const duration = metadata.duration && metadata.duration.trim() !== '' ? metadata.duration : '5:00';
+
+                document.getElementById('newVideoTitle').value = title;
+                document.getElementById('newVideoDescription').value = description;
+                document.getElementById('newVideoCategory').value = category;
+                document.getElementById('newVideoDuration').value = duration;
+
+                console.log('📝 Form fields updated:', { title, description, category, duration });
+
+                // Show success status
+                statusDiv.innerHTML = '✅ Metadata generated! (AI Generated)';
+                statusDiv.className = 'mt-2 text-sm text-green-400';
+
+                return metadata;
+
+            } catch (error) {
+                console.error('❌ Error generating metadata:', error);
+                statusDiv.innerHTML = `❌ ${error.message || 'Failed to generate metadata'}`;
+                statusDiv.className = 'mt-2 text-sm text-red-400';
+
+                // Set descriptive fallback values instead of generic ones
+                document.getElementById('newVideoTitle').value = 'YouTube Video - Manual Title Required';
+                document.getElementById('newVideoDescription').value = 'Please add a description for this video content';
+                document.getElementById('newVideoCategory').value = 'Entertainment';
+                document.getElementById('newVideoDuration').value = '5:00';
+
+                // Don't throw error to allow form submission with fallback values
+                console.log('📝 Using fallback values due to API error');
+            }
+        }
+
+        async function addNewVideo(event) {
+            event.preventDefault();
+
+            const url = document.getElementById('newVideoUrl').value.trim();
+
+            // Validate YouTube URL
+            if (!url || (!url.includes('youtube.com/watch') && !url.includes('youtu.be/'))) {
+                alert('Please enter a valid YouTube URL');
+                return;
+            }
+
+            try {
+                // Get the auto-generated values from hidden fields (already fetched by URL change event)
+                let title = document.getElementById('newVideoTitle').value;
+                let description = document.getElementById('newVideoDescription').value;
+                let category = document.getElementById('newVideoCategory').value;
+                let duration = document.getElementById('newVideoDuration').value;
+
+                // If metadata is missing, fetch it now as fallback
+                if (!title || !description || !category) {
+                    console.log('Metadata missing, fetching as fallback...');
+                    await fetchVideoMetadata(url);
+                    title = document.getElementById('newVideoTitle').value;
+                    description = document.getElementById('newVideoDescription').value;
+                    category = document.getElementById('newVideoCategory').value;
+                    duration = document.getElementById('newVideoDuration').value;
+                }
+
+                // Show confirmation modal with fetched data
+                showConfirmVideoModal(url, title, description, category, duration);
+
+            } catch (error) {
+                console.error('Error fetching metadata:', error);
+                alert('❌ Error generating metadata: ' + error.message);
+            }
+        }
+
+        function clearAddVideoForm() {
+            document.getElementById('newVideoUrl').value = '';
+            document.getElementById('newVideoTitle').value = '';
+            document.getElementById('newVideoDescription').value = '';
+            document.getElementById('newVideoCategory').value = '';
+            document.getElementById('newVideoDuration').value = '';
+
+            // Hide status message
+            const statusDiv = document.getElementById('fetchingStatus');
+            if (statusDiv) {
+                statusDiv.style.display = 'none';
+            }
+        }
+
+        // Confirmation modal functions
+        function showConfirmVideoModal(url, title, description, category, duration) {
+            // Extract video ID for thumbnail
+            const videoId = extractYouTubeId(url);
+            const thumbnail = videoId ? VideoMetadataFetcher.getYouTubeThumbnail(videoId) : '';
+
+            // Populate confirmation modal
+            document.getElementById('confirmThumbnail').src = thumbnail;
+            document.getElementById('confirmVideoUrl').textContent = url;
+            document.getElementById('confirmPostDate').textContent = new Date().toLocaleDateString();
+            document.getElementById('confirmTitle').textContent = title || 'No title available';
+            document.getElementById('confirmDescription').textContent = description || 'No description available';
+
+            // Initialize category checkboxes
+            initializeConfirmCategories(category || 'Entertainment');
+
+            document.getElementById('confirmDuration').textContent = duration || 'Unknown';
+
+            // Store data for final confirmation
+            window.pendingVideoData = {
+                url, title, description, category, duration, thumbnail
+            };
+
+            // Hide add video modal and show confirmation modal
+            document.getElementById('addVideoModal').style.display = 'none';
+            document.getElementById('confirmVideoModal').style.display = 'flex';
+        }
+
+        function closeConfirmVideoModal() {
+            document.getElementById('confirmVideoModal').style.display = 'none';
+            // Clear pending data
+            window.pendingVideoData = null;
+        }
+
+        function goBackToEdit() {
+            // Close confirmation modal and reopen add video modal
+            document.getElementById('confirmVideoModal').style.display = 'none';
+            document.getElementById('addVideoModal').style.display = 'flex';
+        }
+
+        async function confirmAddVideo() {
+            if (!window.pendingVideoData) {
+                alert('❌ No video data available');
+                return;
+            }
+
+            try {
+                const { url, title, description, duration, thumbnail } = window.pendingVideoData;
+
+                // Get selected category from checkboxes (use first selected or fallback to Entertainment)
+                const category = selectedConfirmCategories.length > 0 ? selectedConfirmCategories[0] : 'Entertainment';
+
+                const newVideo = {
+                    title,
+                    description,
+                    thumbnail,
+                    url,
+                    category,
+                    duration
+                };
+
+                // Show loading state
+                const submitBtn = document.querySelector('#confirmVideoModal button[onclick="confirmAddVideo()"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Adding...';
+                submitBtn.disabled = true;
+
+                await videoDb.addVideo(newVideo);
+                closeConfirmVideoModal();
+                closeAddVideoModal();
+                alert('✅ Video added successfully!');
+
+                // Reset form
+                clearAddVideoForm();
+
+                // Reset button
+                if (submitBtn) {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+
+                // Refresh admin videos if on admin page
+                if (document.getElementById('adminVideoGrid')) {
+                    renderAdminVideos();
+                }
+
+            } catch (error) {
+                console.error('Error adding video:', error);
+                alert('❌ Error adding video: ' + error.message);
+
+                // Reset button
+                const submitBtn = document.querySelector('#confirmVideoModal button[onclick="confirmAddVideo()"]');
+                if (submitBtn) {
+                    submitBtn.textContent = '✅ Confirm & Add Video';
+                    submitBtn.disabled = false;
+                }
+            }
+        }
+
+        // Global variable to store current editing video ID
+        let currentEditingVideoId = null;
+
+        async function editVideo(videoId) {
+            const video = videos.find(v => v.id === videoId);
+            if (!video) return;
+
+            currentEditingVideoId = videoId;
+
+            // Populate the edit modal with current video data
+            document.getElementById('editVideoTitle').value = video.title || '';
+            document.getElementById('editVideoDescription').value = video.description || '';
+            // Initialize category checkboxes
+            initializeEditCategories(video.category || 'Entertainment');
+            // Set post date (convert from timestamp if needed)
+            const postDate = video.dateAdded ? new Date(video.dateAdded).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+            document.getElementById('editVideoPostDate').value = postDate;
+            document.getElementById('editVideoUrl').textContent = video.url || '';
+            document.getElementById('editThumbnailPreview').src = video.thumbnail || '';
+
+            // Reset the file input
+            document.getElementById('editThumbnailFile').value = '';
+
+            // Show the edit modal
+            document.getElementById('editVideoModal').style.display = 'flex';
+        }
+
+        function closeEditVideoModal() {
+            document.getElementById('editVideoModal').style.display = 'none';
+            currentEditingVideoId = null;
+        }
+
+        function handleThumbnailUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    document.getElementById('editThumbnailPreview').src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function saveVideoEdits() {
+            if (!currentEditingVideoId) return;
+
+            const title = document.getElementById('editVideoTitle').value.trim();
+            const description = document.getElementById('editVideoDescription').value.trim();
+
+            // Get selected categories from checkboxes (use first selected or fallback to Entertainment)
+            const category = selectedEditCategories.length > 0 ? selectedEditCategories[0] : 'Entertainment';
+            const postDate = document.getElementById('editVideoPostDate').value;
+            const thumbnailFile = document.getElementById('editThumbnailFile').files[0];
+
+            if (!title) {
+                alert('Title is required');
+                return;
+            }
+
+            const updates = {
+                title,
+                description,
+                category,
+                dateAdded: postDate ? new Date(postDate).toISOString() : new Date().toISOString()
+            };
+
+            // Handle thumbnail upload if a new file was selected
+            if (thumbnailFile) {
+                try {
+                    // Convert image to base64 for storage
+                    const base64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.readAsDataURL(thumbnailFile);
+                    });
+                    updates.thumbnail = base64;
+                } catch (error) {
+                    console.error('Error processing thumbnail:', error);
+                    alert('Error processing thumbnail image');
+                    return;
+                }
+            }
+
+            try {
+                const saveBtn = document.querySelector('#editVideoModal button[onclick="saveVideoEdits()"]');
+                saveBtn.textContent = 'Saving...';
+                saveBtn.disabled = true;
+
+                await videoDb.updateVideo(currentEditingVideoId, updates);
+
+                saveBtn.textContent = 'Save Changes';
+                saveBtn.disabled = false;
+
+                closeEditVideoModal();
+                alert('✅ Video updated successfully!');
+            } catch (error) {
+                console.error('Error updating video:', error);
+                alert('❌ Error updating video: ' + error.message);
+
+                const saveBtn = document.querySelector('#editVideoModal button[onclick="saveVideoEdits()"]');
+                saveBtn.textContent = 'Save Changes';
+                saveBtn.disabled = false;
+            }
+        }
+
+        async function deleteVideo(videoId) {
+            console.log('🗑️ Starting delete process for videoId:', videoId);
+
+            // Find video in local array
+            const video = videos.find(v => v.id === videoId);
+            if (!video) {
+                console.error('❌ Video not found in local array:', videoId);
+                alert('❌ Video not found');
+                return;
+            }
+
+            console.log('✅ Video found in local array:', video.title);
+
+            // Confirm deletion
+            const confirmDelete = confirm(`Confirm the removal of this video.`);
+            if (!confirmDelete) {
+                console.log('🚫 User cancelled deletion');
+                return;
+            }
+
+            try {
+                console.log('🔥 Attempting Firebase deletion...');
+                console.log('🔍 Firebase DB object:', window.db);
+                console.log('🔍 Firebase utils:', window.firebaseUtils);
+                console.log('🔍 Target videoId:', videoId);
+                console.log('🔍 Collection: videos');
+
+                // Check authentication and authenticate if needed
+                if (!window.auth.currentUser) {
+                    console.log('🔐 No authenticated user, signing in anonymously...');
+                    const { signInAnonymously } = window.firebaseUtils;
+                    await signInAnonymously(window.auth);
+                    console.log('✅ Authenticated successfully');
+                } else {
+                    console.log('✅ User already authenticated:', window.auth.currentUser.uid);
+                }
+
+                // Check if Firebase is properly initialized
+                if (!window.db) {
+                    throw new Error('Firebase database not initialized');
+                }
+
+                if (!window.firebaseUtils) {
+                    throw new Error('Firebase utilities not loaded');
+                }
+
+                // Direct Firebase delete without using the class method
+                const { doc, deleteDoc } = window.firebaseUtils;
+                console.log('🔍 doc function:', typeof doc);
+                console.log('🔍 deleteDoc function:', typeof deleteDoc);
+
+                const videoRef = doc(window.db, 'videos', videoId);
+                console.log('🔍 Video reference created:', videoRef);
+
+                console.log('🔥 Calling deleteDoc...');
+                await deleteDoc(videoRef);
+                console.log('✅ Firebase deletion successful - document should be removed from Firestore');
+
+                // Verify deletion by trying to read the document
+                console.log('🔍 Verifying deletion...');
+                try {
+                    const { getDoc } = window.firebaseUtils;
+                    const deletedDoc = await getDoc(videoRef);
+                    if (deletedDoc.exists()) {
+                        console.warn('⚠️ WARNING: Document still exists after deletion!');
+                        console.log('Document data:', deletedDoc.data());
+                    } else {
+                        console.log('✅ Confirmed: Document successfully deleted from Firestore');
+                    }
+                } catch (verifyError) {
+                    console.log('✅ Document deletion verified (document not found)');
+                }
+
+                // Remove from local array
+                const index = videos.findIndex(v => v.id === videoId);
+                if (index !== -1) {
+                    videos.splice(index, 1);
+                    console.log('✅ Removed from local array');
+                }
+
+                // Re-render UI
+                renderVideos();
+                if (document.getElementById('adminDashboard')) {
+                    renderAdminVideos();
+                }
+
+                alert('✅ Video deleted successfully from Firebase!');
+                console.log('🎉 Delete process completed successfully');
+
+            } catch (error) {
+                console.error('❌ Firebase deletion error:', error);
+                console.error('Error type:', typeof error);
+                console.error('Error constructor:', error.constructor.name);
+                console.error('Error message:', error.message);
+                console.error('Error code:', error.code);
+                console.error('Full error:', JSON.stringify(error, null, 2));
+
+                alert('❌ Error deleting video: ' + (error.message || error.toString()));
+            }
+        }
+
+        function goHome() {
+            // Check if we're in admin mode
+            const mainElement = document.querySelector('main');
+            if (mainElement.id === 'adminDashboard') {
+                // Restore header navigation to show Admin instead of Home and Logout
+                const headerNav = document.querySelector('header nav .flex.items-center');
+                if (headerNav) {
+                    headerNav.innerHTML = `
+                        <a href="#admin" class="text-gray-400 hover:text-neon-lavender transition-colors" onclick="showAdminLogin()">Admin</a>
+                    `;
+                }
+
+                // Restore original main content
+                if (window.originalMainContent) {
+                    mainElement.innerHTML = window.originalMainContent;
+                    mainElement.id = ''; // Remove admin dashboard id
+                }
+                renderVideos(); // Refresh main view
+            }
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function adminLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('admin_authenticated');
+                goHome(); // Use the goHome function
+            }
+        }
+
+        // Check if admin is already logged in on page load
+        function checkAdminSession() {
+            if (sessionStorage.getItem('admin_authenticated') === 'true') {
+                showAdminDashboard();
+            }
+        }
+
+        // Utility functions
+        function extractYouTubeId(url) {
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+                /youtube\.com\/watch\?.*v=([^&\n?#]+)/
+            ];
+
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match) return match[1];
+            }
+            return null;
+        }
+
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength).trim() + '...';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now.getTime() - date.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 1) return '1 day ago';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+            if (diffDays < 365) return `${Math.ceil(diffDays / 30)} months ago`;
+
+            return date.toLocaleDateString();
+        }
+
+        function getCategoryGradient(category) {
+            const gradients = {
+                'Music': 'from-pink-500 to-blue-600',
+                'Podcasts': 'from-blue-500 to-cyan-600',
+                'Sports': 'from-green-500 to-emerald-600',
+                'Comedy': 'from-red-500 to-pink-600',
+                'Education': 'from-indigo-500 to-blue-600',
+                'Entertainment': 'from-orange-500 to-red-600',
+                'Lifestyle': 'from-blue-500 to-indigo-600',
+                'Documentaries': 'from-gray-500 to-slate-600',
+                'Interviews': 'from-purple-500 to-violet-600',
+                'Vlogs': 'from-teal-500 to-cyan-600',
+                'Others': 'from-yellow-500 to-orange-600',
+            };
+            return gradients[category] || 'from-gray-500 to-gray-600';
+        }
+
+        function clearFilters() {
+            currentCategory = 'All';
+            currentSearchQuery = '';
+            document.getElementById('searchInput').value = '';
+
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-category="All"]').classList.add('active');
+
+            renderVideos();
+        }
+
+        // Admin search functions
+        function filterAdminVideos() {
+            renderAdminVideos();
+        }
+
+        function clearAdminSearch() {
+            const searchInput = document.getElementById('adminSearchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                renderAdminVideos();
+            }
+        }
+
+        // Category checkbox functions
+        let selectedEditCategories = [];
+        let selectedConfirmCategories = [];
+
+        function toggleEditCategory(category) {
+            const item = document.querySelector(`#editCategoryCheckboxes [data-category="${category}"]`);
+            const checkbox = item.querySelector('.custom-checkbox');
+
+            if (selectedEditCategories.includes(category)) {
+                // Uncheck
+                selectedEditCategories = selectedEditCategories.filter(c => c !== category);
+                item.classList.remove('selected');
+                checkbox.classList.remove('checked');
+            } else {
+                // Check
+                selectedEditCategories.push(category);
+                item.classList.add('selected');
+                checkbox.classList.add('checked');
+            }
+        }
+
+        function toggleConfirmCategory(category) {
+            const item = document.querySelector(`#confirmCategoryCheckboxes [data-category="${category}"]`);
+            const checkbox = item.querySelector('.custom-checkbox');
+
+            if (selectedConfirmCategories.includes(category)) {
+                // Uncheck
+                selectedConfirmCategories = selectedConfirmCategories.filter(c => c !== category);
+                item.classList.remove('selected');
+                checkbox.classList.remove('checked');
+            } else {
+                // Check
+                selectedConfirmCategories.push(category);
+                item.classList.add('selected');
+                checkbox.classList.add('checked');
+            }
+        }
+
+        function initializeEditCategories(currentCategory) {
+            // Clear all selections
+            selectedEditCategories = [];
+            document.querySelectorAll('#editCategoryCheckboxes .checkbox-item').forEach(item => {
+                item.classList.remove('selected');
+                item.querySelector('.custom-checkbox').classList.remove('checked');
+            });
+
+            // Select current category
+            if (currentCategory) {
+                selectedEditCategories = [currentCategory];
+                const item = document.querySelector(`#editCategoryCheckboxes [data-category="${currentCategory}"]`);
+                if (item) {
+                    item.classList.add('selected');
+                    item.querySelector('.custom-checkbox').classList.add('checked');
+                }
+            }
+        }
+
+        function initializeConfirmCategories(currentCategory) {
+            // Clear all selections
+            selectedConfirmCategories = [];
+            document.querySelectorAll('#confirmCategoryCheckboxes .checkbox-item').forEach(item => {
+                item.classList.remove('selected');
+                item.querySelector('.custom-checkbox').classList.remove('checked');
+            });
+
+            // Select current category
+            if (currentCategory) {
+                selectedConfirmCategories = [currentCategory];
+                const item = document.querySelector(`#confirmCategoryCheckboxes [data-category="${currentCategory}"]`);
+                if (item) {
+                    item.classList.add('selected');
+                    item.querySelector('.custom-checkbox').classList.add('checked');
+                }
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeVideoModal();
+                closeAdminModal();
+                closeAddVideoModal();
+                closeConfirmVideoModal();
+                closeEditVideoModal();
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = '0s';
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // TSParticles SparklesCore Implementation
+        async function initSparklesCore() {
+            await tsParticles.load("tsparticles", {
+                background: {
+                    color: {
+                        value: "transparent",
+                    },
+                },
+                fpsLimit: 120,
+                interactivity: {
+                    events: {
+                        onClick: {
+                            enable: false,
+                        },
+                        onHover: {
+                            enable: false,
+                        },
+                        resize: true,
+                    },
+                },
+                particles: {
+                    color: {
+                        value: ["#1e40af", "#3b82f6", "#60a5fa", "#93c5fd", "#ffffff"],
+                    },
+                    move: {
+                        direction: "top",
+                        enable: true,
+                        outModes: {
+                            default: "out",
+                        },
+                        random: true,
+                        speed: 1,
+                        straight: false,
+                    },
+                    number: {
+                        density: {
+                            enable: true,
+                            area: 800,
+                        },
+                        value: 100,
+                    },
+                    opacity: {
+                        animation: {
+                            enable: true,
+                            speed: 1,
+                            minimumValue: 0,
+                            sync: false,
+                        },
+                        value: {
+                            min: 0,
+                            max: 1,
+                        },
+                    },
+                    shape: {
+                        type: "circle",
+                    },
+                    size: {
+                        value: {
+                            min: 1,
+                            max: 3,
+                        },
+                        animation: {
+                            enable: true,
+                            speed: 2,
+                            minimumValue: 0.1,
+                            sync: false,
+                        },
+                    },
+                    twinkle: {
+                        particles: {
+                            enable: true,
+                            frequency: 0.05,
+                            opacity: 1,
+                        },
+                    },
+                    move: {
+                        angle: {
+                            offset: 0,
+                            value: 90,
+                        },
+                        direction: "top",
+                        enable: true,
+                        outModes: {
+                            default: "out",
+                        },
+                        random: {
+                            enable: true,
+                            minimumValue: 1,
+                        },
+                        speed: {
+                            min: 0.1,
+                            max: 1,
+                        },
+                        straight: false,
+                        trail: {
+                            enable: true,
+                            length: 10,
+                            fill: {}
+                        },
+                    },
+                },
+                detectRetina: true,
+            });
+        }
+
+        // Initialize videos array
+        let videos = [];
+
+        // Observe video cards when they're created
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the app
+            checkAdminSession();
+
+            // Initialize TSParticles sparkles background
+            initSparklesCore();
+
+            setTimeout(() => {
+                document.querySelectorAll('.video-card').forEach(card => {
+                    observer.observe(card);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>/* Force Vercel redeploy */
