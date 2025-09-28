@@ -297,7 +297,7 @@ export default function Home() {
           {isLoading ? (
             <div className="text-center py-20">
               <div className="text-black text-xl mb-4">Loading videos...</div>
-              <div className="text-black text-sm">If videos don't load, please check your internet connection</div>
+              <div className="text-black text-sm">If videos don&apos;t load, please check your internet connection</div>
               <Button
                 onClick={loadVideos}
                 className="mt-4 bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all"
