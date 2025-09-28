@@ -342,6 +342,7 @@ export default function AdminPage() {
                 src="/DGB.svg"
                 alt="DIRTYGLOVEBASTARDTV Logo"
                 className="h-32 w-auto"
+                style={{ backgroundColor: 'transparent' }}
               />
             </div>
 
@@ -351,6 +352,7 @@ export default function AdminPage() {
                 src="/DGB.svg"
                 alt="DIRTYGLOVEBASTARDTV Logo"
                 className="h-24 w-auto"
+                style={{ backgroundColor: 'transparent' }}
               />
             </div>
 
