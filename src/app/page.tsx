@@ -27,10 +27,14 @@ export default function Home() {
   const [editingVideo, setEditingVideo] = useState<Video | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [dynamicCategories, setDynamicCategories] = useState<string[]>([])
 
-  const categories = [
+  const staticCategories = [
     'All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch'
   ]
+
+  // Use dynamic categories if available, otherwise fall back to static
+  const categories = dynamicCategories.length > 0 ? dynamicCategories : staticCategories
 
   // Authentication effect
   useEffect(() => {
@@ -64,6 +68,19 @@ export default function Home() {
     try {
       const videoList = await getVideos()
       setVideos(videoList)
+
+      // Debug: Log all unique categories in the database
+      const uniqueCategories = [...new Set(videoList.map(video => video.category))].filter(Boolean)
+      console.log('Categories found in database:', uniqueCategories)
+      console.log('Static categories in frontend:', staticCategories)
+
+      // Generate dynamic categories from actual video data
+      if (uniqueCategories.length > 0) {
+        const dynamicCats = ['All', ...uniqueCategories.sort()]
+        setDynamicCategories(dynamicCats)
+        console.log('Using dynamic categories:', dynamicCats)
+      }
+
     } catch (error) {
       console.error('Error loading videos:', error)
       // More descriptive error message for mobile users
