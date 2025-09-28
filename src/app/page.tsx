@@ -33,8 +33,19 @@ export default function Home() {
     'All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch'
   ]
 
-  // Use dynamic categories if available, otherwise fall back to static
-  const categories = dynamicCategories.length > 0 ? dynamicCategories : staticCategories
+  // Merge dynamic and static categories to ensure all desired categories are available
+  const categories = dynamicCategories.length > 0
+    ? ['All', ...new Set([...staticCategories.slice(1), ...dynamicCategories.slice(1)])].sort((a, b) => {
+        // Custom sort to maintain preferred order
+        const order = ['All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch']
+        const aIndex = order.indexOf(a)
+        const bIndex = order.indexOf(b)
+        if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
+        if (aIndex !== -1) return -1
+        if (bIndex !== -1) return 1
+        return a.localeCompare(b)
+      })
+    : staticCategories
 
   // Authentication effect
   useEffect(() => {
@@ -78,7 +89,19 @@ export default function Home() {
       if (uniqueCategories.length > 0) {
         const dynamicCats = ['All', ...uniqueCategories.sort()]
         setDynamicCategories(dynamicCats)
-        console.log('Using dynamic categories:', dynamicCats)
+        console.log('Dynamic categories from DB:', dynamicCats)
+
+        // Show the merged result
+        const mergedCats = ['All', ...new Set([...staticCategories.slice(1), ...uniqueCategories])].sort((a, b) => {
+          const order = ['All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch']
+          const aIndex = order.indexOf(a)
+          const bIndex = order.indexOf(b)
+          if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
+          if (aIndex !== -1) return -1
+          if (bIndex !== -1) return 1
+          return a.localeCompare(b)
+        })
+        console.log('Final merged categories:', mergedCats)
       }
 
     } catch (error) {
