@@ -199,8 +199,11 @@ export default function Home() {
                     onError={(e) => {
                       console.error('Mobile logo failed to load:', e)
                       // Show fallback
-                      e.target.style.display = 'none'
-                      e.target.nextElementSibling.style.display = 'flex'
+                      const target = e.target as HTMLImageElement
+                      target.style.display = 'none'
+                      if (target.nextElementSibling) {
+                        (target.nextElementSibling as HTMLElement).style.display = 'flex'
+                      }
                     }}
                   />
                   {/* Fallback if logo doesn't load */}
