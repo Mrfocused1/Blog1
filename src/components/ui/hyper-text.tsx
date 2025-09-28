@@ -34,11 +34,29 @@ export function HyperText({
   const [trigger, setTrigger] = useState(false);
   const interations = useRef(0);
   const isFirstRender = useRef(true);
+  const elementRef = useRef<HTMLDivElement>(null);
 
   const triggerAnimation = () => {
     interations.current = 0;
     setTrigger(true);
   };
+
+  // Add scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (elementRef.current) {
+        const rect = elementRef.current.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+        if (isVisible) {
+          triggerAnimation();
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(
@@ -72,8 +90,11 @@ export function HyperText({
 
   return (
     <div
-      className="flex scale-100 cursor-default overflow-hidden py-2"
+      ref={elementRef}
+      className="flex scale-100 cursor-pointer overflow-hidden py-2"
       onMouseEnter={triggerAnimation}
+      onClick={triggerAnimation}
+      onTouchStart={triggerAnimation}
       style={style}
     >
       <AnimatePresence mode="wait">
@@ -81,7 +102,7 @@ export function HyperText({
           <motion.span
             key={i}
             className={cn("font-mono", letter === " " ? "w-3" : "", className)}
-            style={{ color: '#16a34a', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}
+            style={style}
             {...framerProps}
           >
             {letter.toUpperCase()}

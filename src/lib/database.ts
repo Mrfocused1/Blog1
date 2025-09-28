@@ -107,16 +107,8 @@ export async function getVideos(): Promise<Video[]> {
       ...doc.data()
     })) as Video[]
 
-    // Sort by sortOrder first, then by creation date
+    // Sort by creation date first (most recent first), then by sortOrder
     return videos.sort((a, b) => {
-      // If both have sortOrder, use that
-      if (a.sortOrder !== undefined && b.sortOrder !== undefined) {
-        return a.sortOrder - b.sortOrder
-      }
-      // If only one has sortOrder, prioritize it
-      if (a.sortOrder !== undefined) return -1
-      if (b.sortOrder !== undefined) return 1
-      // Fall back to creation date sorting
       const aTime = a.createdAt?.toDate().getTime() || 0
       const bTime = b.createdAt?.toDate().getTime() || 0
       return bTime - aTime // Most recent first
@@ -160,11 +152,17 @@ export async function searchVideos(searchTerm: string): Promise<Video[]> {
       ...doc.data()
     })) as Video[]
 
-    return videos.filter(video =>
-      video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      video.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      video.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    )
+    return videos
+      .filter(video =>
+        video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        video.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        video.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
+      .sort((a, b) => {
+        const aTime = a.createdAt?.toDate().getTime() || 0
+        const bTime = b.createdAt?.toDate().getTime() || 0
+        return bTime - aTime // Most recent first
+      })
   } catch (error) {
     console.error('Error searching videos:', error)
     return []

@@ -29,8 +29,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
 
   const categories = [
-    'All', 'Music', 'Podcasts', 'Sports', 'News', 'Education',
-    'Entertainment', 'Lifestyle', 'Documentaries', 'Interviews', 'Comedy', 'Vlogs'
+    'All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch'
   ]
 
   // Authentication effect
@@ -168,7 +167,26 @@ export default function Home() {
       {/* Header */}
       <header className="relative z-10 p-4 animate-blur-in">
         <div className="container mx-auto">
-          <nav className="flex items-center justify-end mb-4">
+          <nav className="flex items-center justify-between mb-4">
+            {/* Logo - Left on desktop, center on mobile */}
+            <div className="hidden md:flex items-center">
+              <img
+                src="/DGB.svg"
+                alt="DIRTYGLOVEBASTARDTV Logo"
+                className="h-32 w-auto"
+              />
+            </div>
+
+            {/* Mobile logo - centered */}
+            <div className="md:hidden flex justify-center w-full">
+              <img
+                src="/DGB.svg"
+                alt="DIRTYGLOVEBASTARDTV Logo"
+                className="h-24 w-auto"
+              />
+            </div>
+
+            {/* Admin button */}
             <div className="flex items-center gap-4">
               <Link href="/admin">
                 <Button
@@ -188,13 +206,13 @@ export default function Home() {
         <div className="text-center py-1 sm:py-2 mb-2.5">
           <div className="flex justify-center">
             <HyperText
-              text="LiveByTheRules"
+              text="DIRTYGLOVEBASTARDTV"
               className="text-3xl sm:text-4xl md:text-6xl font-bold mb-2.5 relative z-20"
-              style={{ color: '#16a34a', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}
+              style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}
             />
           </div>
-          <p className="text-lg sm:text-xl mb-2.5 max-w-2xl mx-auto px-4 relative z-20" style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}>
-            Find the full videos of the clips posted on the page
+          <p className="text-lg sm:text-xl font-bold mb-2.5 max-w-2xl mx-auto px-4 relative z-20" style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}>
+            Find the full videos of the clips posted on this page
           </p>
 
           {/* Search Bar */}
@@ -205,9 +223,9 @@ export default function Home() {
                 placeholder="Search videos..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-12 px-4 pr-12 bg-white/80 backdrop-blur-lg border border-green-600/30 text-black placeholder:text-gray-500 focus:outline-none focus:border-green-600 focus:shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all duration-300"
+                className="w-full h-12 px-4 pr-12 bg-white/80 backdrop-blur-lg border border-black/30 text-black placeholder:text-gray-500 focus:outline-none focus:border-black focus:shadow-[0_0_20px_rgba(0,0,0,0.3)] transition-all duration-300"
               />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-600 hover:text-green-400 transition-colors">
+              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black hover:text-gray-700 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                   <circle cx="11" cy="11" r="8"></circle>
                   <path d="m21 21-4.35-4.35"></path>
@@ -227,13 +245,13 @@ export default function Home() {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className="relative cursor-pointer text-sm font-semibold px-4 py-2 rounded-full transition-colors text-black/80 hover:text-green-600 whitespace-nowrap flex-shrink-0"
+                    className="relative cursor-pointer text-sm font-semibold px-4 py-2 rounded-full transition-colors text-black/80 hover:text-black whitespace-nowrap flex-shrink-0"
                   >
                     {category}
                     {isActive && (
                       <motion.div
                         layoutId="categoryLamp"
-                        className="absolute inset-0 w-full bg-green-600/10 rounded-full -z-10"
+                        className="absolute inset-0 w-full bg-black/10 rounded-full -z-10"
                         initial={false}
                         transition={{
                           type: "spring",
@@ -257,11 +275,23 @@ export default function Home() {
             </div>
           ) : filteredVideos.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
-            {filteredVideos.map((video) => (
-              <div
+            {filteredVideos.map((video, index) => (
+              <motion.div
                 key={video.id}
                 className="bg-white/50 border border-gray-200 hover:bg-white/70 transition-all cursor-pointer overflow-hidden rounded-lg"
                 onClick={() => handleVideoClick(video)}
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.4,
+                  delay: index * 0.05,
+                  ease: "easeOut"
+                }}
+                whileHover={{
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className="relative">
                   {getThumbnailUrl(video) ? (
@@ -293,7 +323,7 @@ export default function Home() {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
           ) : (

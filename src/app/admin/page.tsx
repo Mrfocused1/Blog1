@@ -23,6 +23,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Toaster } from '@/components/ui/sonner'
+import { HyperText } from '@/components/ui/hyper-text'
 import { signInAnonymously, onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
 import { Video, getVideos, deleteVideo, updateVideoSortOrder } from '@/lib/database'
@@ -334,12 +335,31 @@ export default function AdminPage() {
       {/* Header */}
       <header className="relative z-10 p-4 animate-blur-in">
         <div className="container mx-auto">
-          <nav className="flex items-center justify-end mb-4">
+          <nav className="flex items-center justify-between mb-4">
+            {/* Logo - Left on desktop, center on mobile */}
+            <div className="hidden md:flex items-center">
+              <img
+                src="/DGB.svg"
+                alt="DIRTYGLOVEBASTARDTV Logo"
+                className="h-32 w-auto"
+              />
+            </div>
+
+            {/* Mobile logo - centered */}
+            <div className="md:hidden flex justify-center w-full">
+              <img
+                src="/DGB.svg"
+                alt="DIRTYGLOVEBASTARDTV Logo"
+                className="h-24 w-auto"
+              />
+            </div>
+
+            {/* Back button */}
             <div className="flex items-center gap-4">
               <Link href="/">
                 <Button
                   variant="outline"
-                  className="bg-green-100 border-green-300 text-black hover:bg-green-200"
+                  className="bg-gray-100 border-gray-300 text-black hover:bg-gray-200"
                 >
                   ← Back to Site
                 </Button>
@@ -352,10 +372,14 @@ export default function AdminPage() {
       {/* Hero Section */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-1 sm:py-2">
         <div className="text-center py-1 sm:py-2 mb-2.5">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-2.5 relative z-20" style={{ color: '#16a34a', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}>
-            LiveByTheRules Admin
-          </h1>
-          <p className="text-lg sm:text-xl mb-2.5 max-w-2xl mx-auto px-4 relative z-20" style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}>
+          <div className="flex justify-center">
+            <HyperText
+              text="DIRTYGLOVEBASTARDTV"
+              className="text-3xl sm:text-4xl md:text-6xl font-bold mb-2.5 relative z-20"
+              style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}
+            />
+          </div>
+          <p className="text-lg sm:text-xl font-bold mb-2.5 max-w-2xl mx-auto px-4 relative z-20" style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}>
             Manage your video directory
           </p>
 
@@ -367,9 +391,9 @@ export default function AdminPage() {
                 placeholder="Search videos to manage..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-12 px-4 pr-12 bg-white/80 backdrop-blur-lg border border-green-600/30 text-black placeholder:text-gray-500 focus:outline-none focus:border-green-600 focus:shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all duration-300"
+                className="w-full h-12 px-4 pr-12 bg-white/80 backdrop-blur-lg border border-black/30 text-black placeholder:text-gray-500 focus:outline-none focus:border-black focus:shadow-[0_0_20px_rgba(0,0,0,0.3)] transition-all duration-300"
               />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-600 hover:text-green-400 transition-colors">
+              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black hover:text-gray-700 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                   <circle cx="11" cy="11" r="8"></circle>
                   <path d="m21 21-4.35-4.35"></path>

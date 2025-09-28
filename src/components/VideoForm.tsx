@@ -18,49 +18,30 @@ interface VideoFormProps {
 }
 
 const categories = [
-  'All', 'Music', 'Podcasts', 'Sports', 'News', 'Education',
-  'Entertainment', 'Lifestyle', 'Documentaries', 'Interviews', 'Comedy', 'Vlogs'
+  'All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch'
 ]
 
 const detectCategoriesFromContent = (title: string, description: string): string[] => {
   const content = `${title} ${description}`.toLowerCase()
   const detectedCategories: string[] = []
 
-  if (content.includes('music') || content.includes('song') || content.includes('album') || content.includes('artist')) {
+  if (content.includes('music') || content.includes('song') || content.includes('album') || content.includes('artist') || content.includes('beat') || content.includes('track')) {
     detectedCategories.push('Music')
   }
-  if (content.includes('podcast') || content.includes('interview') || content.includes('discussion')) {
-    detectedCategories.push('Podcasts')
-  }
-  if (content.includes('sport') || content.includes('football') || content.includes('basketball') || content.includes('soccer')) {
-    detectedCategories.push('Sports')
-  }
-  if (content.includes('news') || content.includes('breaking') || content.includes('report') || content.includes('update')) {
-    detectedCategories.push('News')
-  }
-  if (content.includes('education') || content.includes('learn') || content.includes('tutorial') || content.includes('lesson')) {
-    detectedCategories.push('Education')
-  }
-  if (content.includes('entertainment') || content.includes('movie') || content.includes('show') || content.includes('tv')) {
-    detectedCategories.push('Entertainment')
-  }
-  if (content.includes('lifestyle') || content.includes('health') || content.includes('fitness') || content.includes('fashion')) {
-    detectedCategories.push('Lifestyle')
-  }
-  if (content.includes('documentary') || content.includes('documentary')) {
-    detectedCategories.push('Documentaries')
-  }
-  if (content.includes('interview') && !detectedCategories.includes('Interviews')) {
+  if (content.includes('interview') || content.includes('conversation') || content.includes('talk') || content.includes('discussion')) {
     detectedCategories.push('Interviews')
   }
-  if (content.includes('comedy') || content.includes('funny') || content.includes('humor') || content.includes('joke')) {
-    detectedCategories.push('Comedy')
+  if (content.includes('podcast') || content.includes('episode') || content.includes('show')) {
+    detectedCategories.push('Podcasts')
   }
-  if (content.includes('vlog') || content.includes('daily') || content.includes('my day') || content.includes('personal')) {
-    detectedCategories.push('Vlogs')
+  if (content.includes('freestyle') || content.includes('cypher') || content.includes('bars') || content.includes('rap') || content.includes('flow')) {
+    detectedCategories.push('Freestyle')
+  }
+  if (content.includes('off the porch') || content.includes('porch') || content.includes('street') || content.includes('hood')) {
+    detectedCategories.push('Off The Porch')
   }
 
-  return detectedCategories.length > 0 ? detectedCategories : ['All']
+  return detectedCategories.length > 0 ? detectedCategories : ['Music']
 }
 
 export default function VideoForm({ video, open, onOpenChange, onVideoSaved }: VideoFormProps) {
@@ -265,7 +246,7 @@ export default function VideoForm({ video, open, onOpenChange, onVideoSaved }: V
                         }))
                       }
                     }}
-                    className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500"
+                    className="w-4 h-4 text-black bg-gray-100 border-gray-300 rounded focus:ring-black"
                   />
                   <label htmlFor={category} className="text-sm text-black cursor-pointer">
                     {category}
@@ -282,7 +263,7 @@ export default function VideoForm({ video, open, onOpenChange, onVideoSaved }: V
                 <Badge
                   key={category}
                   variant="outline"
-                  className="bg-green-100 border-green-300 text-green-700"
+                  className="bg-gray-100 border-gray-300 text-black"
                 >
                   {category}
                 </Badge>
