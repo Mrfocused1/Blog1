@@ -81,18 +81,24 @@ export default function Home() {
       setVideos(videoList)
 
       // Debug: Log all unique categories in the database
-      const uniqueCategories = [...new Set(videoList.map(video => video.category))].filter(Boolean)
-      console.log('Categories found in database:', uniqueCategories)
+      // Check both category field and tags array for categories
+      const categoryFromField = [...new Set(videoList.map(video => video.category))].filter(Boolean)
+      const categoriesFromTags = [...new Set(videoList.flatMap(video => video.tags || []))].filter(Boolean)
+      const allUniqueCategories = [...new Set([...categoryFromField, ...categoriesFromTags])].filter(Boolean)
+
+      console.log('Categories from category field:', categoryFromField)
+      console.log('Categories from tags array:', categoriesFromTags)
+      console.log('All unique categories combined:', allUniqueCategories)
       console.log('Static categories in frontend:', staticCategories)
 
       // Generate dynamic categories from actual video data
-      if (uniqueCategories.length > 0) {
-        const dynamicCats = ['All', ...uniqueCategories.sort()]
+      if (allUniqueCategories.length > 0) {
+        const dynamicCats = ['All', ...allUniqueCategories.sort()]
         setDynamicCategories(dynamicCats)
         console.log('Dynamic categories from DB:', dynamicCats)
 
         // Show the merged result
-        const mergedCats = ['All', ...new Set([...staticCategories.slice(1), ...uniqueCategories])].sort((a, b) => {
+        const mergedCats = ['All', ...new Set([...staticCategories.slice(1), ...allUniqueCategories])].sort((a, b) => {
           const order = ['All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch']
           const aIndex = order.indexOf(a)
           const bIndex = order.indexOf(b)
@@ -123,9 +129,18 @@ export default function Home() {
   const filterVideos = async () => {
     let filtered = videos
 
-    // Filter by category
+    // Filter by category (check both category field and tags array)
     if (selectedCategory !== 'All') {
-      filtered = videos.filter(video => video.category === selectedCategory)
+      filtered = videos.filter(video => {
+        // Check if the video's category field matches
+        const categoryMatches = video.category === selectedCategory
+
+        // Check if the video's tags array includes the selected category
+        const tagsInclude = video.tags && video.tags.includes(selectedCategory)
+
+        // Return true if either matches
+        return categoryMatches || tagsInclude
+      })
     }
 
     // Filter by search term
