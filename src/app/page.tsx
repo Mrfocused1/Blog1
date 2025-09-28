@@ -178,15 +178,39 @@ export default function Home() {
           {/* Mobile-first responsive navigation */}
           <nav className="relative mb-4">
             {/* Mobile Layout: Logo centered, button on right */}
-            <div className="flex md:hidden items-center justify-between min-h-[6rem] px-2">
+            <div className="flex md:hidden items-center justify-between min-h-[6rem] px-2 relative">
               <div className="w-16"></div> {/* Spacer for balance */}
-              <div className="flex-1 flex justify-center">
-                <img
-                  src="/DGB.svg"
-                  alt="DIRTYGLOVEBASTARDTV Logo"
-                  className="h-20 w-auto max-w-[200px]"
-                  style={{ backgroundColor: 'transparent' }}
-                />
+              <div className="flex-1 flex justify-center items-center">
+                <div className="relative bg-white/10 rounded-lg p-2">
+                  <img
+                    src="/DGB.svg"
+                    alt="DIRTYGLOVEBASTARDTV Logo"
+                    className="h-14 w-auto max-w-[160px] relative z-50"
+                    style={{
+                      backgroundColor: 'white',
+                      display: 'block',
+                      minHeight: '56px',
+                      minWidth: '56px',
+                      border: '1px solid rgba(0,0,0,0.1)',
+                      borderRadius: '4px',
+                      padding: '4px'
+                    }}
+                    onLoad={() => console.log('Mobile logo loaded successfully')}
+                    onError={(e) => {
+                      console.error('Mobile logo failed to load:', e)
+                      // Show fallback
+                      e.target.style.display = 'none'
+                      e.target.nextElementSibling.style.display = 'flex'
+                    }}
+                  />
+                  {/* Fallback if logo doesn't load */}
+                  <div
+                    className="hidden items-center justify-center h-14 w-14 bg-black text-white text-xs font-bold rounded"
+                    style={{ minHeight: '56px', minWidth: '56px' }}
+                  >
+                    DGB
+                  </div>
+                </div>
               </div>
               <div className="w-16 flex justify-end">
                 <Link href="/admin">
