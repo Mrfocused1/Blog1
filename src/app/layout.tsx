@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DIRTYGLOVEBASTARDTV",
+  title: "Chanrmaine Directory",
   description: "Urban content and entertainment hub",
 };
 
