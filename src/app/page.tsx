@@ -30,14 +30,14 @@ export default function Home() {
   const [dynamicCategories, setDynamicCategories] = useState<string[]>([])
 
   const staticCategories = [
-    'All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch'
+    'All', 'Black History', 'Economics', 'Current Affairs', 'Politics', 'Documentaries'
   ]
 
   // Merge dynamic and static categories to ensure all desired categories are available
   const categories = dynamicCategories.length > 0
     ? ['All', ...new Set([...staticCategories.slice(1), ...dynamicCategories.slice(1)])].sort((a, b) => {
         // Custom sort to maintain preferred order
-        const order = ['All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch']
+        const order = ['All', 'Black History', 'Economics', 'Current Affairs', 'Politics', 'Documentaries']
         const aIndex = order.indexOf(a)
         const bIndex = order.indexOf(b)
         if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
@@ -99,7 +99,7 @@ export default function Home() {
 
         // Show the merged result
         const mergedCats = ['All', ...new Set([...staticCategories.slice(1), ...allUniqueCategories])].sort((a, b) => {
-          const order = ['All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch']
+          const order = ['All', 'Black History', 'Economics', 'Current Affairs', 'Politics', 'Documentaries']
           const aIndex = order.indexOf(a)
           const bIndex = order.indexOf(b)
           if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
@@ -316,7 +316,7 @@ export default function Home() {
             />
           </div>
           <p className="text-lg sm:text-xl font-bold mb-2.5 max-w-2xl mx-auto px-4 relative z-20" style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}>
-            Find the full videos of the clips posted on this page
+            Exploring Black History, Economics, Politics & Current Affairs
           </p>
 
           {/* Search Bar */}
