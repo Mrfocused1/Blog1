@@ -27,25 +27,13 @@ export default function Home() {
   const [editingVideo, setEditingVideo] = useState<Video | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [dynamicCategories, setDynamicCategories] = useState<string[]>([])
 
   const staticCategories = [
     'All', 'Black History', 'Economics', 'Current Affairs', 'Politics', 'Documentaries'
   ]
 
-  // Merge dynamic and static categories to ensure all desired categories are available
-  const categories = dynamicCategories.length > 0
-    ? ['All', ...new Set([...staticCategories.slice(1), ...dynamicCategories.slice(1)])].sort((a, b) => {
-        // Custom sort to maintain preferred order
-        const order = ['All', 'Black History', 'Economics', 'Current Affairs', 'Politics', 'Documentaries']
-        const aIndex = order.indexOf(a)
-        const bIndex = order.indexOf(b)
-        if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
-        if (aIndex !== -1) return -1
-        if (bIndex !== -1) return 1
-        return a.localeCompare(b)
-      })
-    : staticCategories
+  // Use only static categories (ignore old categories from database)
+  const categories = staticCategories
 
   // Authentication effect
   useEffect(() => {
@@ -79,36 +67,6 @@ export default function Home() {
     try {
       const videoList = await getVideos()
       setVideos(videoList)
-
-      // Debug: Log all unique categories in the database
-      // Check both category field and tags array for categories
-      const categoryFromField = [...new Set(videoList.map(video => video.category))].filter(Boolean)
-      const categoriesFromTags = [...new Set(videoList.flatMap(video => video.tags || []))].filter(Boolean)
-      const allUniqueCategories = [...new Set([...categoryFromField, ...categoriesFromTags])].filter(Boolean)
-
-      console.log('Categories from category field:', categoryFromField)
-      console.log('Categories from tags array:', categoriesFromTags)
-      console.log('All unique categories combined:', allUniqueCategories)
-      console.log('Static categories in frontend:', staticCategories)
-
-      // Generate dynamic categories from actual video data
-      if (allUniqueCategories.length > 0) {
-        const dynamicCats = ['All', ...allUniqueCategories.sort()]
-        setDynamicCategories(dynamicCats)
-        console.log('Dynamic categories from DB:', dynamicCats)
-
-        // Show the merged result
-        const mergedCats = ['All', ...new Set([...staticCategories.slice(1), ...allUniqueCategories])].sort((a, b) => {
-          const order = ['All', 'Black History', 'Economics', 'Current Affairs', 'Politics', 'Documentaries']
-          const aIndex = order.indexOf(a)
-          const bIndex = order.indexOf(b)
-          if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
-          if (aIndex !== -1) return -1
-          if (bIndex !== -1) return 1
-          return a.localeCompare(b)
-        })
-        console.log('Final merged categories:', mergedCats)
-      }
 
     } catch (error) {
       console.error('Error loading videos:', error)
@@ -230,76 +188,16 @@ export default function Home() {
       {/* Header */}
       <header className="relative z-10 p-4 animate-blur-in">
         <div className="container mx-auto">
-          {/* Mobile-first responsive navigation */}
           <nav className="relative mb-4">
-            {/* Mobile Layout: Logo centered, button on right */}
-            <div className="flex md:hidden items-center justify-between min-h-[6rem] px-2 relative">
-              <div className="w-16"></div> {/* Spacer for balance */}
-              <div className="flex-1 flex justify-center items-center">
-                <div className="relative bg-white/10 rounded-lg p-1">
-                  <img
-                    src="/DGB.svg"
-                    alt="DIRTYGLOVEBASTARDTV Logo"
-                    className="h-20 w-auto max-w-[200px] relative z-50"
-                    style={{
-                      backgroundColor: 'transparent',
-                      display: 'block',
-                      minHeight: '80px',
-                      minWidth: '80px'
-                    }}
-                    onLoad={() => console.log('Mobile logo loaded successfully')}
-                    onError={(e) => {
-                      console.error('Mobile logo failed to load:', e)
-                      // Show fallback
-                      const target = e.target as HTMLImageElement
-                      target.style.display = 'none'
-                      if (target.nextElementSibling) {
-                        (target.nextElementSibling as HTMLElement).style.display = 'flex'
-                      }
-                    }}
-                  />
-                  {/* Fallback if logo doesn't load */}
-                  <div
-                    className="hidden items-center justify-center h-14 w-14 bg-black text-white text-xs font-bold rounded"
-                    style={{ minHeight: '56px', minWidth: '56px' }}
-                  >
-                    DGB
-                  </div>
-                </div>
-              </div>
-              <div className="w-16 flex justify-end">
-                <Link href="/admin">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all text-xs"
-                  >
-                    Admin
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Desktop Layout: Logo left, button right */}
-            <div className="hidden md:flex items-center justify-between">
-              <div className="flex items-center">
-                <img
-                  src="/DGB.svg"
-                  alt="DIRTYGLOVEBASTARDTV Logo"
-                  className="h-32 w-auto"
-                  style={{ backgroundColor: 'transparent' }}
-                />
-              </div>
-              <div className="flex items-center gap-4">
-                <Link href="/admin">
-                  <Button
-                    variant="outline"
-                    className="bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all"
-                  >
-                    Admin
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex items-center justify-end">
+              <Link href="/admin">
+                <Button
+                  variant="outline"
+                  className="bg-white/20 border border-gray-200 text-black hover:bg-white/40 backdrop-blur-lg transition-all"
+                >
+                  Admin
+                </Button>
+              </Link>
             </div>
           </nav>
         </div>
