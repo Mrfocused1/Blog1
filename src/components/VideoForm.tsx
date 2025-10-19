@@ -18,30 +18,30 @@ interface VideoFormProps {
 }
 
 const categories = [
-  'All', 'Music', 'Interviews', 'Podcasts', 'Freestyle', 'Off The Porch'
+  'All', 'Black History', 'Economics', 'Current Affairs', 'Politics', 'Documentaries'
 ]
 
 const detectCategoriesFromContent = (title: string, description: string): string[] => {
   const content = `${title} ${description}`.toLowerCase()
   const detectedCategories: string[] = []
 
-  if (content.includes('music') || content.includes('song') || content.includes('album') || content.includes('artist') || content.includes('beat') || content.includes('track')) {
-    detectedCategories.push('Music')
+  if (content.includes('black history') || content.includes('african american') || content.includes('slavery') || content.includes('civil rights') || content.includes('mlk') || content.includes('malcolm x') || content.includes('harriet tubman') || content.includes('rosa parks')) {
+    detectedCategories.push('Black History')
   }
-  if (content.includes('interview') || content.includes('conversation') || content.includes('talk') || content.includes('discussion')) {
-    detectedCategories.push('Interviews')
+  if (content.includes('economics') || content.includes('economy') || content.includes('finance') || content.includes('financial') || content.includes('business') || content.includes('trade') || content.includes('market') || content.includes('money')) {
+    detectedCategories.push('Economics')
   }
-  if (content.includes('podcast') || content.includes('episode') || content.includes('show')) {
-    detectedCategories.push('Podcasts')
+  if (content.includes('current affairs') || content.includes('news') || content.includes('current') || content.includes('today') || content.includes('recent') || content.includes('breaking') || content.includes('update')) {
+    detectedCategories.push('Current Affairs')
   }
-  if (content.includes('freestyle') || content.includes('cypher') || content.includes('bars') || content.includes('rap') || content.includes('flow')) {
-    detectedCategories.push('Freestyle')
+  if (content.includes('politics') || content.includes('political') || content.includes('government') || content.includes('election') || content.includes('vote') || content.includes('policy') || content.includes('law') || content.includes('congress')) {
+    detectedCategories.push('Politics')
   }
-  if (content.includes('off the porch') || content.includes('porch') || content.includes('street') || content.includes('hood')) {
-    detectedCategories.push('Off The Porch')
+  if (content.includes('documentary') || content.includes('doc') || content.includes('film') || content.includes('investigation') || content.includes('explore') || content.includes('deep dive')) {
+    detectedCategories.push('Documentaries')
   }
 
-  return detectedCategories.length > 0 ? detectedCategories : ['Music']
+  return detectedCategories.length > 0 ? detectedCategories : ['All']
 }
 
 export default function VideoForm({ video, open, onOpenChange, onVideoSaved }: VideoFormProps) {
@@ -173,7 +173,7 @@ export default function VideoForm({ video, open, onOpenChange, onVideoSaved }: V
             {video ? 'Edit Video' : 'Add New Video'}
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            {video ? 'Update video information' : 'Add a new video to the directory'}
+            {video ? 'Update video information' : 'Add educational content about Black History, Economics, Politics & Current Affairs'}
           </DialogDescription>
         </DialogHeader>
 

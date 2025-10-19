@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Charmaine Directory",
-  description: "Urban content and entertainment hub",
+  description: "Educational content exploring Black History, Economics, Politics & Current Affairs",
 };
 
 export default function RootLayout({
