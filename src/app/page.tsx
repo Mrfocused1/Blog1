@@ -310,7 +310,7 @@ export default function Home() {
         <div className="text-center py-1 sm:py-2 mb-2.5">
           <div className="flex justify-center">
             <HyperText
-              text="Chanrmaine Directory"
+              text="Charmaine Directory"
               className="text-3xl sm:text-4xl md:text-6xl font-bold mb-2.5 relative z-20"
               style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}
             />
