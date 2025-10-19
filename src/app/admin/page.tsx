@@ -335,76 +335,16 @@ export default function AdminPage() {
       {/* Header */}
       <header className="relative z-10 p-4 animate-blur-in">
         <div className="container mx-auto">
-          {/* Mobile-first responsive navigation */}
           <nav className="relative mb-4">
-            {/* Mobile Layout: Logo centered, button on right */}
-            <div className="flex md:hidden items-center justify-between min-h-[6rem] px-2 relative">
-              <div className="w-16"></div> {/* Spacer for balance */}
-              <div className="flex-1 flex justify-center items-center">
-                <div className="relative bg-white/10 rounded-lg p-1">
-                  <img
-                    src="/DGB.svg"
-                    alt="DIRTYGLOVEBASTARDTV Logo"
-                    className="h-20 w-auto max-w-[200px] relative z-50"
-                    style={{
-                      backgroundColor: 'transparent',
-                      display: 'block',
-                      minHeight: '80px',
-                      minWidth: '80px'
-                    }}
-                    onLoad={() => console.log('Mobile admin logo loaded successfully')}
-                    onError={(e) => {
-                      console.error('Mobile admin logo failed to load:', e)
-                      // Show fallback
-                      const target = e.target as HTMLImageElement
-                      target.style.display = 'none'
-                      if (target.nextElementSibling) {
-                        (target.nextElementSibling as HTMLElement).style.display = 'flex'
-                      }
-                    }}
-                  />
-                  {/* Fallback if logo doesn't load */}
-                  <div
-                    className="hidden items-center justify-center h-14 w-14 bg-black text-white text-xs font-bold rounded"
-                    style={{ minHeight: '56px', minWidth: '56px' }}
-                  >
-                    DGB
-                  </div>
-                </div>
-              </div>
-              <div className="w-16 flex justify-end">
-                <Link href="/">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-gray-100 border-gray-300 text-black hover:bg-gray-200 text-xs"
-                  >
-                    ← Back
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Desktop Layout: Logo left, button right */}
-            <div className="hidden md:flex items-center justify-between">
-              <div className="flex items-center">
-                <img
-                  src="/DGB.svg"
-                  alt="DIRTYGLOVEBASTARDTV Logo"
-                  className="h-32 w-auto"
-                  style={{ backgroundColor: 'transparent' }}
-                />
-              </div>
-              <div className="flex items-center gap-4">
-                <Link href="/">
-                  <Button
-                    variant="outline"
-                    className="bg-gray-100 border-gray-300 text-black hover:bg-gray-200"
-                  >
-                    ← Back to Site
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex items-center justify-end">
+              <Link href="/">
+                <Button
+                  variant="outline"
+                  className="bg-gray-100 border-gray-300 text-black hover:bg-gray-200"
+                >
+                  ← Back to Site
+                </Button>
+              </Link>
             </div>
           </nav>
         </div>
@@ -415,13 +355,13 @@ export default function AdminPage() {
         <div className="text-center py-1 sm:py-2 mb-2.5">
           <div className="flex justify-center">
             <HyperText
-              text="DIRTYGLOVEBASTARDTV"
+              text="Charmaine Directory Admin"
               className="text-3xl sm:text-4xl md:text-6xl font-bold mb-2.5 relative z-20"
               style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}
             />
           </div>
           <p className="text-lg sm:text-xl font-bold mb-2.5 max-w-2xl mx-auto px-4 relative z-20" style={{ color: '#000000', textShadow: '0 0 4px rgba(255,255,255,0.8)' }}>
-            Manage your video directory
+            Manage educational content about Black History, Economics, Politics & Current Affairs
           </p>
 
           {/* Search Bar with Add Video Button */}
